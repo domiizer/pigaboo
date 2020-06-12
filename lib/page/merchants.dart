@@ -88,7 +88,7 @@ class _merchantsState extends State<merchants> {
                         onTap: () {},
                         child: Container(
                             width: MediaQuery.of(context).size.width * 0.2,
-                            child: Text(prefs.getString('firstName'))))
+                            child: Text(prefs.getString('firstName'),textScaleFactor: 1.0)))
                     : Container(
                         child: Row(
                           children: <Widget>[
@@ -98,7 +98,7 @@ class _merchantsState extends State<merchants> {
                                 _navigateToLogin(context);
                               },
                               child: Container(
-                                child: Text('Login /',
+                                child: Text('Login /',textScaleFactor: 1.0,
                                     style: TextStyle(fontSize: 10)),
                               ),
                             ),
@@ -107,7 +107,7 @@ class _merchantsState extends State<merchants> {
                                 _navigateToRegister(context);
                               },
                               child: Container(
-                                child: Text('Register',
+                                child: Text('Register',textScaleFactor: 1.0,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 10)),
                               ),
@@ -147,7 +147,7 @@ class _merchantsState extends State<merchants> {
                           Center(
                             child: Container(
                                 margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                                child: Text('หมวดหมู่ยอดนิยม')),
+                                child: Text('หมวดหมู่ยอดนิยม',textScaleFactor: 1.0)),
                           ),
                           Container(
                             //Top rate
@@ -184,7 +184,7 @@ class _merchantsState extends State<merchants> {
 //                                      ),
                                         ),
                                         Text(
-                                          popular_Categories[index].toString(),
+                                          popular_Categories[index].toString(),textScaleFactor: 1.0,
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
@@ -192,7 +192,7 @@ class _merchantsState extends State<merchants> {
                                         ),
                                         Text(
                                           'ราคาโดยประมาณ ฿' +
-                                              avgPrice[index].toString(),
+                                              avgPrice[index].toString(),textScaleFactor: 1.0,
                                           style: TextStyle(fontSize: 12),
                                         ),
                                       ],
@@ -221,12 +221,12 @@ class _merchantsState extends State<merchants> {
                                     endIndent: (constanc.ScreenWidth / 4) * 3,
                                   ),
                                   Text(
-                                    widget.language.Recommended,
+                                    widget.language.Recommended,textScaleFactor: 1.0,
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text(widget.language.Recommended_desc),
+                                  Text(widget.language.Recommended_desc,textScaleFactor: 1.0),
                                   Container(
                                     width: constanc.ScreenWidth,
                                     height: constanc.ScreenHeight * 0.2,
@@ -257,7 +257,7 @@ class _merchantsState extends State<merchants> {
                                                         color: Colors.black,
                                                         child: Text(
                                                           promoted[index]
-                                                              ['category_type'],
+                                                              ['category_type'],textScaleFactor: 1.0,
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white),
@@ -270,7 +270,7 @@ class _merchantsState extends State<merchants> {
                                                     Container(
                                                       color: Colors.deepOrange,
                                                       child: Text(
-                                                        'Hot',
+                                                        'Hot',textScaleFactor: 1.0,
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.white),
@@ -278,16 +278,6 @@ class _merchantsState extends State<merchants> {
                                                     )
                                                   ],
                                                 ),
-//                                              Container(
-//                                                color: Colors.black,
-//                                                  child: Text(promoted[index]['category_type'],style: TextStyle(color: Colors.white),)
-//                                              ),
-//                                              Positioned(
-//                                                right: 0,
-//                                                child: Container(
-//                                                  color: Colors.deepOrange,
-//                                                  child: Text('Hot',style: TextStyle(color: Colors.white),),),
-//                                              )
                                               ],
                                             ),
                                           );
@@ -303,11 +293,35 @@ class _merchantsState extends State<merchants> {
                                     fit: BoxFit.cover,
                                     width: constanc.ScreenWidth,
                                     height: constanc.ScreenWidth,
+                                      loadingBuilder: (BuildContext
+                                          context,
+                                          Widget
+                                          child,
+                                          ImageChunkEvent
+                                          loadingProgress){
+                                        if (loadingProgress ==
+                                            null)
+                                          return child;
+                                        return Container(
+                                          width: constanc.ScreenWidth,
+                                          height: constanc.ScreenWidth,
+                                          child:
+                                          Center(
+                                            child:
+                                            CircularProgressIndicator(
+                                              value: loadingProgress.expectedTotalBytes !=
+                                                  null
+                                                  ? loadingProgress.cumulativeBytesLoaded /
+                                                  loadingProgress.expectedTotalBytes
+                                                  : null,
+                                            ),
+                                          ),
+                                        );
+                                      }
                                   ),
                                   //listtest
                                   ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),
-//                                scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
                                     itemCount: popular_Categories == null
                                         ? 0
@@ -328,12 +342,11 @@ class _merchantsState extends State<merchants> {
                                             Column(
                                               children: <Widget>[
                                                 Text(popular_Categories[index]
-                                                    .toString()),
+                                                    .toString(),textScaleFactor: 1.0,style: TextStyle(fontSize: 20),),
                                                 Container(
                                                   child: ListView.builder(
                                                     physics:
                                                         NeverScrollableScrollPhysics(),
-//                                                scrollDirection: Axis.vertical,
                                                     shrinkWrap: true,
                                                     itemCount: subCategoties ==
                                                             null
@@ -351,7 +364,6 @@ class _merchantsState extends State<merchants> {
                                                                   .circular(
                                                                       15.0),
                                                         ),
-//                                                    shrinkWrap: true,
                                                         child: Column(
                                                           children: <Widget>[
                                                             ClipRRect(
@@ -413,7 +425,7 @@ class _merchantsState extends State<merchants> {
                                                                       subCategoties[index][index2]
                                                                               [
                                                                               'menu_name']
-                                                                          .toString(),
+                                                                          .toString(),textScaleFactor: 1.0,
                                                                       style: TextStyle(
                                                                           fontSize:
                                                                               20),
@@ -434,7 +446,7 @@ class _merchantsState extends State<merchants> {
                                                                       subCategoties[index][index2]
                                                                               [
                                                                               'price']
-                                                                          .toString(),
+                                                                          .toString(),textScaleFactor: 1.0,
                                                                       style: TextStyle(
                                                                           fontSize:
                                                                               20),
@@ -479,7 +491,7 @@ class _merchantsState extends State<merchants> {
                                                                       ? null
                                                                       : Center(
                                                                           child:
-                                                                              Text(countForItem[index][index2]['count'].toString())),
+                                                                              Text(countForItem[index][index2]['count'].toString(),textScaleFactor: 1.0)),
                                                                 ),
                                                                 subCategoties[index]
                                                                                 [
@@ -494,7 +506,7 @@ class _merchantsState extends State<merchants> {
                                                                             30,
                                                                             20),
                                                                         child: Text(
-                                                                            'out of stock'))
+                                                                            'out of stock',textScaleFactor: 1.0))
                                                                     : GestureDetector(
                                                                         child:
                                                                             Container(
@@ -519,16 +531,6 @@ class _merchantsState extends State<merchants> {
                                                                         ),
                                                                         onTap:
                                                                             () {
-//                                                                      if(!selectedItem.contains(subCategoties[index][index2])) {
-//                                                                        selectedItem
-//                                                                            .add(
-//                                                                            subCategoties[index][index2]);
-//                                                                        print(subCategoties[index][index2]['menu_id']);
-//                                                                        countForSelected.add({'menu_id':(subCategoties[index][index2]['menu_id']),'name':subCategoties[index][index2]['menu_name'],'many':1,'price':subCategoties[index][index2]['price']});
-//                                                                      }else{
-//                                                                        print(countForSelected.indexOf({'menu_id':subCategoties[index][index2]['menu_id'],'many':1}));
-//                                                                      }
-//                                                                      print(cartItem.toString());
                                                                           _showModalBottomSheet(
                                                                               context,
                                                                               subCategoties[index][index2],
@@ -576,7 +578,6 @@ class _merchantsState extends State<merchants> {
   _navigatorToCart() async {
     print('userSended');
     print(widget.merchantData.alias);
-    //model.currentUser
     await Navigator.push(
         context,
         CupertinoPageRoute(
@@ -632,7 +633,6 @@ class _merchantsState extends State<merchants> {
         context,
         CupertinoPageRoute(
             builder: (context) => register(language: widget.language)));
-
     if (checklogin != null) {
       setState(() {});
     }
@@ -707,17 +707,9 @@ class _merchantsState extends State<merchants> {
   }
 
   addCartItem(var _item) {
-//    print(_item);
     bool added = false;
     if (countForSelected.length == 0) {
       countForSelected.add(_item);
-//      cartItem.add({
-//        'menu_id': _item['menu_id'],
-//        'menu_name': _item['menu_name'],
-//        'addon': _item['addon'],
-//        'price': _item['price'],
-//        'count': _item['count']
-//      });
       added = true;
     } else {
       for (int i = 0; i < countForSelected.length; i++) {
@@ -731,16 +723,8 @@ class _merchantsState extends State<merchants> {
     }
     if (!added) {
       countForSelected.add(_item);
-//      cartItem.add({
-//        'menu_id': _item['menu_id'],
-//        'menu_name': _item['menu_name'],
-//        'addon': _item['addon'],
-//        'price': _item['price'],
-//        'count': _item['count']
-//      });
     }
     print('cartItem');
-//    print(cartItem);
     print('countForSelected');
     print(countForSelected);
   }
@@ -773,11 +757,9 @@ class _merchantsState extends State<merchants> {
       for (int i = 0; i < addon.length; i++) {
         checkis.add(false);
         addonPrice.add(int.parse(addon[i]['price'].toString()));
-//      print(addon[i]['price']);
       }
       print(addon);
       print(addonPrice[0].runtimeType);
-//      print(addon.length.runtimeType);
     } else {}
     showModalBottomSheet(
         isScrollControlled: true,
@@ -807,20 +789,20 @@ class _merchantsState extends State<merchants> {
                               Row(
                                 children: <Widget>[
                                   Text(
-                                    _menuList['menu_name'],
+                                    _menuList['menu_name'],textScaleFactor: 1.0,
                                   ),
                                   Expanded(
                                     child: Container(
                                       height: 10,
                                     ),
                                   ),
-                                  Text(_menuList['price'].toString()),
+                                  Text(_menuList['price'].toString(),textScaleFactor: 1.0),
                                 ],
                               ),
                               Row(
                                 children: <Widget>[
                                   Text(
-                                    '    ' + _menuList['description'],
+                                    '    ' + _menuList['description'],textScaleFactor: 1.0,
                                     style: TextStyle(
                                         fontSize: 10, color: Colors.black87),
                                   ),
@@ -868,14 +850,14 @@ class _merchantsState extends State<merchants> {
                                               });
                                             },
                                           ),
-                                          Text(addon[index]['name']),
+                                          Text(addon[index]['name'],textScaleFactor: 1.0),
                                           Expanded(
                                             child: Container(
                                               height: 10,
                                             ),
                                           ),
                                           Text(
-                                              addon[index]['price'].toString()),
+                                              addon[index]['price'].toString(),textScaleFactor: 1.0),
                                         ],
                                       ),
                                     );
@@ -885,7 +867,7 @@ class _merchantsState extends State<merchants> {
                       Container(
                         height: constanc.ScreenHeight * 0.07,
                         width: constanc.ScreenWidth,
-                        child: Center(child: Text(totalPrice.toString())),
+                        child: Center(child: Text(totalPrice.toString(),textScaleFactor: 1.0)),
                       ),
                       Container(
                         width: constanc.ScreenWidth,
@@ -918,7 +900,7 @@ class _merchantsState extends State<merchants> {
                               child: Container(
                                 child: Center(
                                     child: Text(
-                                  count.toString(),
+                                  count.toString(),textScaleFactor: 1.0,
                                   style: TextStyle(fontSize: 20),
                                 )),
                               ),
@@ -968,7 +950,7 @@ class _merchantsState extends State<merchants> {
                           width: constanc.ScreenWidth,
                           child: Center(
                               child: Text(
-                            'Add to cart',
+                            'Add to cart',textScaleFactor: 1.0,
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           )),
                         ),
@@ -991,7 +973,7 @@ class _merchantsState extends State<merchants> {
           return Card(
             child: Column(
               children: <Widget>[
-                Text('' + index.toString()),
+                Text('' + index.toString(),textScaleFactor: 1.0),
               ],
             ),
           );
@@ -1001,7 +983,6 @@ class _merchantsState extends State<merchants> {
   getUserData() async {
     prefs = await SharedPreferences.getInstance();
     //Return String
-    String stringValue = prefs.getString('firstName');
     if (prefs.getBool('status') != null) {
       setState(() {
         isLogin = prefs.getBool('status');

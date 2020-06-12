@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +43,7 @@ class _cartState extends State<cart> {
       onWillPop: _onBackPress,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.language.itemsinbasket),
+          title: Text(widget.language.itemsinbasket,textScaleFactor: 1.0),
           backgroundColor: Color.fromRGBO(255, 176, 3, 1),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
@@ -66,28 +65,25 @@ class _cartState extends State<cart> {
                     children: <Widget>[
                       Container(
                           margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                          child: Text('#')),
+                          child: Text('#',textScaleFactor: 1.0)),
                       Expanded(
                         flex: 4,
                         child: Container(
-//                          color: Colors.red,
                             height: 20,
-                            child: Text(widget.language.list)),
+                            child: Text(widget.language.list,textScaleFactor: 1.0)),
                       ),
                       Expanded(
                           flex: 1,
                           child: Container(
-//                            color: Colors.green,
                               height: 20,
                               child:
-                                  Center(child: Text(widget.language.amount)))),
+                                  Center(child: Text(widget.language.amount,textScaleFactor: 1.0)))),
                       Expanded(
                           flex: 1,
                           child: Container(
                               height: 20,
-//                            color: Colors.yellow,
                               alignment: Alignment.centerRight,
-                              child: Text(widget.language.price))),
+                              child: Text(widget.language.price,textScaleFactor: 1.0))),
                     ],
                   ),
                 ),
@@ -98,7 +94,6 @@ class _cartState extends State<cart> {
               Flexible(
                 flex: 5,
                 child: Container(
-//                    width: constanc.ScreenWidth,
                   child: ListView.separated(
                       shrinkWrap: true,
                       itemCount: widget.countForSelected.length,
@@ -113,7 +108,7 @@ class _cartState extends State<cart> {
                                   Container(
                                       //numberlist
                                       margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                                      child: Text((index + 1).toString())),
+                                      child: Text((index + 1).toString(),textScaleFactor: 1.0)),
                                   Expanded(
                                       //menunamelist
                                       flex: 4,
@@ -122,11 +117,10 @@ class _cartState extends State<cart> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Container(
-//                                            color: Colors.red,
                                               child: Text(widget
                                                   .countForSelected[index]
                                                       ['menu_name']
-                                                  .toString())),
+                                                  .toString(),textScaleFactor: 1.0)),
                                           Container(
                                             child: widget.countForSelected[
                                                             index]['addon'][0]
@@ -157,7 +151,7 @@ class _cartState extends State<cart> {
                                                                           [
                                                                           'addon']
                                                                       [
-                                                                      index2]['name'],
+                                                                      index2]['name'],textScaleFactor: 1.0,
                                                               style: TextStyle(
                                                                   fontSize: 10,
                                                                   color: Colors
@@ -171,7 +165,6 @@ class _cartState extends State<cart> {
                                     //amountlist
                                     flex: 1,
                                     child: Container(
-//                                      color: Colors.green,
                                         child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -204,7 +197,7 @@ class _cartState extends State<cart> {
                                                 ? Text(widget
                                                     .countForSelected[index]
                                                         ['count']
-                                                    .toString())
+                                                    .toString(),textScaleFactor: 1.0)
                                                 : null),
                                         Expanded(
                                           child: IconButton(
@@ -228,7 +221,6 @@ class _cartState extends State<cart> {
                                     flex: 1,
                                     child: Container(
                                       alignment: Alignment.centerRight,
-//                                    color: Colors.yellow,
                                       child: Text(multi(
                                                   widget.countForSelected[index]
                                                           ['price'] +
@@ -240,7 +232,7 @@ class _cartState extends State<cart> {
                                                   widget.countForSelected[index]
                                                       ['count'])
                                               .toString() +
-                                          '฿'),
+                                          '฿',textScaleFactor: 1.0),
                                     ),
                                   ),
                                 ],
@@ -254,19 +246,15 @@ class _cartState extends State<cart> {
               Flexible(
                 flex: 1,
                 child: Container(
-//                  height: constanc.ScreenHeight*0.15,
                   child: Column(
                     children: <Widget>[
                       Text(widget.language.total +
                           amounttotal(widget.countForSelected).toString() +
-                          '฿'),
+                          '฿',textScaleFactor: 1.0),
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-//                          SizedBox(
-//                            width: constanc.ScreenWidth/2-20,
-//                          )
                             Expanded(
                                 //clearOrder
                                 child: Container(
@@ -284,7 +272,7 @@ class _cartState extends State<cart> {
                                   });
                                 },
                                 child: Text(
-                                  widget.language.clear,
+                                  widget.language.clear,textScaleFactor: 1.0,
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.white),
                                 ),
@@ -300,12 +288,17 @@ class _cartState extends State<cart> {
                                   ),
                                   color: Colors.green,
                                   onPressed: () {
-                                    isLogin
-                                        ? _showDialog()
-                                        : _navigateToLogin();
+                                    print(widget.countForSelected.length);
+                                    if(widget.countForSelected.length>0) {
+                                      isLogin
+                                          ? _showDialogAddress()
+                                          : _navigateToLogin();
+                                    }else{
+                                      _showDialogNomenu();
+                                    }
                                   },
                                   child: Text(
-                                    widget.language.placeorder,
+                                    widget.language.placeorder,textScaleFactor: 1.0,
                                     style: TextStyle(
                                         fontSize: 12, color: Colors.white),
                                   ),
@@ -331,8 +324,14 @@ class _cartState extends State<cart> {
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
           .then((value) => _confirmOrder(value));
   }
-
-  _showDialog() {
+  _showDialogNomenu(){
+    showDialog(context: context, builder: (BuildContext context){
+      return AlertDialog(
+        title: Text('no Item',textScaleFactor: 1.0),
+      );
+    });
+  }
+  _showDialogAddress() {
     var txt = TextEditingController();
     if (prefs.getString('address') != 'NO_ADDRESS'){
       txt.text=prefs.getString('address');
@@ -355,12 +354,11 @@ class _cartState extends State<cart> {
               child: new Row(
                 children: <Widget>[
                   new Container(
-                    // padding: new EdgeInsets.all(10.0),
                     decoration: new BoxDecoration(
                       color: Colors.white,
                     ),
                     child: new Text(
-                      'Address',
+                      'Address',textScaleFactor: 1.0,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 18.0,
@@ -393,7 +391,6 @@ class _cartState extends State<cart> {
               )),
               flex: 2,
             ),
-
             // dialog bottom
             Expanded(
               child: RaisedButton(
@@ -407,7 +404,7 @@ class _cartState extends State<cart> {
                 color: Colors.green,
                 padding:EdgeInsets.all(16.0),
                 child: new Text(
-                  widget.language.placeorder,
+                  widget.language.placeorder,textScaleFactor: 1.0,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,
@@ -464,7 +461,7 @@ class _cartState extends State<cart> {
     }
     String myURL = "https://api.pigaboo.me/createNewOrder";
     http.post(myURL, headers: {
-      'Accept': 'application/json'
+//      'Accept': 'application/json'
     }, body: {
       "customerId": prefs.getString('customerId'),
       "deliveryAddress": prefs.getString('address'),
@@ -481,10 +478,10 @@ class _cartState extends State<cart> {
       print('responseStatuscode : ' + response.statusCode.toString());
       if (response.statusCode == 200) {
         print(response.body);
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => DeliveryDetail(language: widget.language)));
+//        Navigator.push(
+//            context,
+//            CupertinoPageRoute(
+//                builder: (context) => DeliveryDetail(language: widget.language)));
       } else {
         print('not response');
         throw Exception('error :(');

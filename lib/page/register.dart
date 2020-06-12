@@ -49,9 +49,9 @@ class _registerState extends State<register> {
             Column(
               children: <Widget>[
                 Text(
-                  'PIGABOO',
+                  'PIGABOO',textScaleFactor: 1.0,
                 ),
-                Text(widget.language.fromdoortodoor),
+                Text(widget.language.fromdoortodoor,textScaleFactor: 1.0),
               ],
             ),
           ],
@@ -66,7 +66,7 @@ class _registerState extends State<register> {
                   height: 50,
                 ),
                 Text(
-                  widget.language.register,
+                  widget.language.register,textScaleFactor: 1.0,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
@@ -95,7 +95,6 @@ class _registerState extends State<register> {
                             borderSide: BorderSide(
                                 color: Color.fromRGBO(255, 176, 3, 1)),
                           ),
-                          //fillColor: Colors.green
                         ),
                       ),
                       SizedBox(
@@ -120,7 +119,6 @@ class _registerState extends State<register> {
                             borderSide: BorderSide(
                                 color: Color.fromRGBO(255, 176, 3, 1)),
                           ),
-                          //fillColor: Colors.green
                         ),
                       ),
                       SizedBox(
@@ -145,7 +143,6 @@ class _registerState extends State<register> {
                             borderSide: BorderSide(
                                 color: Color.fromRGBO(255, 176, 3, 1)),
                           ),
-                          //fillColor: Colors.green
                         ),
                       ),
                       SizedBox(
@@ -176,7 +173,7 @@ class _registerState extends State<register> {
                   ),
                 ),
                 CupertinoButton(
-                  child: Text(widget.language.submit),
+                  child: Text(widget.language.submit,textScaleFactor: 1.0),
                   color: Color.fromRGBO(255, 176, 3, 1),
                   onPressed: () {
                     setState(() {
@@ -197,10 +194,9 @@ class _registerState extends State<register> {
                       print('CheckFirstName');
                         // Alert FirstName empty
                         AlertDialog alert = AlertDialog(
-                          title: Text("Firstname can\'t be empty"),
-                          content: Text("Please fill firstname."),
+                          title: Text("Firstname can\'t be empty",textScaleFactor: 1.0),
+                          content: Text("Please fill firstname.",textScaleFactor: 1.0),
                         );
-
                         // show the dialog
                         showDialog(
                           context: context,
@@ -212,10 +208,9 @@ class _registerState extends State<register> {
                       print('CheckLastName');
                       // Alert LastName empty
                       AlertDialog alert = AlertDialog(
-                        title: Text("Lastname can\'t be empty"),
-                        content: Text("Please fill lastname."),
+                        title: Text("Lastname can\'t be empty",textScaleFactor: 1.0),
+                        content: Text("Please fill lastname.",textScaleFactor: 1.0),
                       );
-
                       // show the dialog
                       showDialog(
                         context: context,
@@ -227,10 +222,9 @@ class _registerState extends State<register> {
                       print('CheckPhoneNumber');
                       // Alert PhoneNumber empty
                       AlertDialog alert = AlertDialog(
-                        title: Text("Phone number can\'t be empty"),
-                        content: Text("Please fill phone number."),
+                        title: Text("Phone number can\'t be empty",textScaleFactor: 1.0),
+                        content: Text("Please fill phone number.",textScaleFactor: 1.0),
                       );
-
                       // show the dialog
                       showDialog(
                         context: context,
@@ -242,10 +236,9 @@ class _registerState extends State<register> {
                       print('CheckPassword');
                       // Alert Password empty
                       AlertDialog alert = AlertDialog(
-                        title: Text("Password can\'t be empty"),
-                        content: Text("Please fill password."),
+                        title: Text("Password can\'t be empty",textScaleFactor: 1.0),
+                        content: Text("Please fill password.",textScaleFactor: 1.0),
                       );
-
                       // show the dialog
                       showDialog(
                         context: context,

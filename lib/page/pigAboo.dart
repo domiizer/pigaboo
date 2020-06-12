@@ -46,16 +46,13 @@ class _pigAbooState extends State<pigAboo> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-//    if(constanc.ScreenWidth == null){
     constanc.ScreenWidth = MediaQuery.of(context).size.width;
     constanc.ScreenHeight = MediaQuery.of(context).size.height;
     getUserData();
-//    }
   }
 
   @override
   Widget build(BuildContext context) {
-//    fetchMenu();
     // TODO: implement build
     return isLoad
         ? Scaffold(
@@ -70,107 +67,109 @@ class _pigAbooState extends State<pigAboo> {
               automaticallyImplyLeading: false,
               backgroundColor: Color.fromRGBO(255, 176, 3, 1),
               title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Container(
-                    color: Colors.white,
-                    height: 20,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: dropdownValue,
-//                elevation: 16,
-                        style: TextStyle(color: Colors.deepPurple),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            dropdownValue = newValue;
-                            language.setPasa(newValue);
-//                            print(newValue);
-                          });
-                        },
-                        items: <String>['ภาษาไทย', 'English', ' 简体中文']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ),
-                  Expanded(
+                  Flexible(
+                    flex: 4,
                     child: Container(
-                      height: 10,
-                    ),
-                  ),
-                  Image.asset(
-                    'images/Logo_black.png',
-                    scale: 8,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        'PIG A BOO',
-                      ),
-                      Text(
-                        language.fromdoortodoor,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: 2,
-                    ),
-                  ),
-
-                    isLogin != false?
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      proflie(language: language)));
-                        },
-                        child: Container(
-                            child: prefs.getString('firstName') != null
-                                ? Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.2,
-                                    child: Text(prefs.getString('firstName')))
-                                : null),
-                      )
-                     : Container(
-                        child: Row(
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                //Navigation
-                                _navigateToLogin(context);
-                              },
-                              child: Container(
-                                child: Text('Login /',
-                                    style: TextStyle(fontSize: 10)),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                _navigateToRegister(context);
-                              },
-                              child: Container(
-                                child: Text('Register',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 10)),
-                              ),
-                            ),
-                          ],
+                      color: Colors.white,
+                      height: constanc.ScreenHeight*0.03,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: dropdownValue,
+//                          style: TextStyle(color: Colors.deepPurple),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                              language.setPasa(newValue);
+                            });
+                          },
+                          items: <String>['ภาษาไทย', 'English', ' 简体中文']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,textScaleFactor: 1.0),
+                            );
+                          }).toList(),
                         ),
                       ),
-                  Expanded(
-                    child: Container(
-                      height: 10,
                     ),
                   ),
+                  Flexible(
+                    flex: 2,
+                    child: Image.asset(
+                      'images/Logo_black.png',
+//                      scale: 8,
+                    ),
+                  ),
+                  Flexible(
+                    flex: 8,
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'PIG A BOO',textScaleFactor: 1.0,
+                          style: TextStyle(fontSize: constanc.ScreenWidth*0.05),
+                        ),
+                        Text(
+                          language.fromdoortodoor,textScaleFactor: 1.0,
+//                          style: TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: constanc.ScreenWidth*0.04),
+                        ),
+                      ],
+                    ),
+                  ),
+                    isLogin != false?
+                      Flexible(
+                        flex: 2,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) =>
+                                        proflie(language: language)));
+                          },
+                          child: Container(
+                              child: prefs.getString('firstName') != null
+                                  ? Container(
+//                                    width:
+//                                        MediaQuery.of(context).size.width * 0.2,
+                                      child: Text(prefs.getString('firstName'),textScaleFactor: 1.0))
+                                  : null),
+                        ),
+                      )
+                     : Flexible(
+                      flex: 2,
+                       child: Container(
+                          child: Row(
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  //Navigation
+                                  _navigateToLogin(context);
+                                },
+                                child: Container(
+                                  child: Text('Login /',
+                                      style: TextStyle(fontSize: 10),textScaleFactor: 1.0),
+                                ),
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _navigateToRegister(context);
+                                  },
+                                  child: Container(
+                                    child: Text('Register',textScaleFactor: 1.0,
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 10)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                     ),
                 ],
               ),
             ),
@@ -194,7 +193,6 @@ class _pigAbooState extends State<pigAboo> {
                         //Store
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                         width: constanc.ScreenWidth,
-//                  color: Colors.amber,
                         child: Column(
                           children: <Widget>[
                             Container(
@@ -211,7 +209,7 @@ class _pigAbooState extends State<pigAboo> {
                                     ),
                                   ),
                                   Text(
-                                    language.store,
+                                    language.store,textScaleFactor: 1.0,
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ],
@@ -251,7 +249,7 @@ class _pigAbooState extends State<pigAboo> {
                                                       child: Text(
                                                         menu[index].name,
                                                         overflow: TextOverflow
-                                                            .ellipsis,
+                                                            .ellipsis,textScaleFactor: 1.0,
                                                         textWidthBasis:
                                                             TextWidthBasis
                                                                 .longestLine,
@@ -286,7 +284,6 @@ class _pigAbooState extends State<pigAboo> {
                       Container(
                         //Store
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-
                         child: Card(
                           child: Column(
                             children: <Widget>[
@@ -305,7 +302,7 @@ class _pigAbooState extends State<pigAboo> {
                                       ),
                                     ),
                                     Text(
-                                      language.howtouse,
+                                      language.howtouse,textScaleFactor: 1.0,
                                       style: TextStyle(fontSize: 20),
                                     ),
                                   ],
@@ -318,7 +315,6 @@ class _pigAbooState extends State<pigAboo> {
                               ),
                               Container(
                                 // Restaurant_List Card
-//                        height: 200, //300
                                 child: Column(
                                   children: <Widget>[
                                     Container(
@@ -342,7 +338,7 @@ class _pigAbooState extends State<pigAboo> {
                                                               .width) /
                                                           4,
                                                       child: Text(
-                                                          language.browse,
+                                                          language.browse,textScaleFactor: 1.0,
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -355,7 +351,7 @@ class _pigAbooState extends State<pigAboo> {
                                                               .width) /
                                                           4,
                                                       child: Text(
-                                                        language.browse_desc,
+                                                        language.browse_desc,textScaleFactor: 1.0,
                                                         style: TextStyle(
                                                             fontSize: 10),
                                                       ),
@@ -367,12 +363,10 @@ class _pigAbooState extends State<pigAboo> {
                                           ),
                                           Expanded(
                                             child: Container(
-//                                        color: Colors.yellow,
                                               height: 10,
                                             ),
                                           ),
                                           Container(
-//                                      color: Colors.red,
                                             child: Row(
                                               children: <Widget>[
                                                 Icon(
@@ -391,7 +385,7 @@ class _pigAbooState extends State<pigAboo> {
                                                           4,
                                                       child: Text(
                                                         language
-                                                            .choosesyourdishes,
+                                                            .choosesyourdishes,textScaleFactor: 1.0,
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight
@@ -406,7 +400,7 @@ class _pigAbooState extends State<pigAboo> {
                                                           4,
                                                       child: Text(
                                                           language
-                                                              .choosesyourdishes_desc,
+                                                              .choosesyourdishes_desc,textScaleFactor: 1.0,
                                                           style: TextStyle(
                                                               fontSize: 10)),
                                                     ),
@@ -422,7 +416,6 @@ class _pigAbooState extends State<pigAboo> {
                                       child: Row(
                                         children: <Widget>[
                                           Container(
-//                                      color: Colors.red,
                                             child: Row(
                                               children: <Widget>[
                                                 Icon(
@@ -441,7 +434,7 @@ class _pigAbooState extends State<pigAboo> {
                                                           4,
                                                       child: Text(
                                                           language
-                                                              .confrimorderandpay,
+                                                              .confrimorderandpay,textScaleFactor: 1.0,
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -453,10 +446,9 @@ class _pigAbooState extends State<pigAboo> {
                                                               .size
                                                               .width) /
                                                           4,
-//                                                width: 130,
                                                       child: Text(
                                                         language
-                                                            .confrimorderandpay_desc,
+                                                            .confrimorderandpay_desc,textScaleFactor: 1.0,
                                                         style: TextStyle(
                                                             fontSize: 10),
                                                       ),
@@ -468,12 +460,10 @@ class _pigAbooState extends State<pigAboo> {
                                           ),
                                           Expanded(
                                             child: Container(
-//                                        color: Colors.yellow,
                                               height: 10,
                                             ),
                                           ),
                                           Container(
-//                                      color: Colors.red,
                                             child: Row(
                                               children: <Widget>[
                                                 Icon(
@@ -492,7 +482,7 @@ class _pigAbooState extends State<pigAboo> {
                                                           4,
                                                       child: Text(
                                                           language
-                                                              .deliveryorpickup,
+                                                              .deliveryorpickup,textScaleFactor: 1.0,
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -506,7 +496,7 @@ class _pigAbooState extends State<pigAboo> {
                                                           4,
                                                       child: Text(
                                                         language
-                                                            .deliveryorpickup_desc,
+                                                            .deliveryorpickup_desc,textScaleFactor: 1.0,
                                                         style: TextStyle(
                                                             fontSize: 10),
                                                       ),
@@ -533,12 +523,10 @@ class _pigAbooState extends State<pigAboo> {
                         //Join Us
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                         width: constanc.ScreenWidth,
-//                  color: Colors.amber,
                         child: Container(
                           width: constanc.ScreenWidth,
                           child: Card(
                             child: Column(
-//                        mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
@@ -555,7 +543,7 @@ class _pigAbooState extends State<pigAboo> {
                                         ),
                                       ),
                                       Text(
-                                        language.beourpartner,
+                                        language.beourpartner,textScaleFactor: 1.0,
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ],
@@ -570,28 +558,28 @@ class _pigAbooState extends State<pigAboo> {
                                   height: 10,
                                 ),
                                 Text(
-                                  language.whyus,
+                                  language.whyus,textScaleFactor: 1.0,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text(language.whyus_desc),
+                                Text(language.whyus_desc,textScaleFactor: 1.0),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Text(
-                                  language.increseslaes,
+                                  language.increseslaes,textScaleFactor: 1.0,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                Text(language.increseslaes_desc),
+                                Text(language.increseslaes_desc,textScaleFactor: 1.0),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Text(
-                                  language.easytomanagethestore,
+                                  language.easytomanagethestore,textScaleFactor: 1.0,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                Text(language.easytomanagethestore_desc),
+                                Text(language.easytomanagethestore_desc,textScaleFactor: 1.0),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -621,7 +609,7 @@ class _pigAbooState extends State<pigAboo> {
                                       ),
                                     ),
                                     Text(
-                                      language.about + ' PIGABOO',
+                                      language.about + ' PIGABOO',textScaleFactor: 1.0,
                                       style: TextStyle(fontSize: 20),
                                     ),
                                   ],
@@ -632,7 +620,7 @@ class _pigAbooState extends State<pigAboo> {
                                 height: 0,
                                 thickness: 5,
                               ),
-                              Text(language.about_desc),
+                              Text(language.about_desc,textScaleFactor: 1.0),
                               SizedBox(
                                 height: 10,
                               )
@@ -646,7 +634,6 @@ class _pigAbooState extends State<pigAboo> {
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                         color: Color.fromRGBO(255, 176, 3, 1),
                         width: constanc.ScreenWidth,
-//                  height: 200,
                         child: Row(
                           children: <Widget>[
                             SizedBox(
@@ -658,9 +645,9 @@ class _pigAbooState extends State<pigAboo> {
                                   'images/Logo_black.png',
                                   scale: 8,
                                 ),
-                                Text('LocalTeenranger'),
+                                Text('LocalTeenranger',textScaleFactor: 1.0),
                                 Text(
-                                  '117/143 หมู่ที่ 12 ตำบลป่าแดด อำเภอเมือง จังหวัดเชียงใหม่ 50100',
+                                  '117/143 หมู่ที่ 12 ตำบลป่าแดด อำเภอเมือง จังหวัดเชียงใหม่ 50100',textScaleFactor: 1.0,
                                   style: TextStyle(fontSize: 8),
                                 ),
                               ],
@@ -686,7 +673,7 @@ class _pigAbooState extends State<pigAboo> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text('@LTRcafe',
+                                      Text('@LTRcafe',textScaleFactor: 1.0,
                                           style: TextStyle(fontSize: 10)),
                                     ],
                                   ),
@@ -702,7 +689,7 @@ class _pigAbooState extends State<pigAboo> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text('098-6589999',
+                                      Text('098-6589999',textScaleFactor: 1.0,
                                           style: TextStyle(fontSize: 10)),
                                     ],
                                   ),
@@ -719,7 +706,7 @@ class _pigAbooState extends State<pigAboo> {
                                         width: 10,
                                       ),
                                       Text(
-                                        'LocalTeenranger',
+                                        'LocalTeenranger',textScaleFactor: 1.0,
                                         style: TextStyle(fontSize: 10),
                                       ),
                                     ],
@@ -779,8 +766,6 @@ class _pigAbooState extends State<pigAboo> {
     // Navigator.pop on the Selection Screen.
     Login checklogin = await Navigator.push(context,
         CupertinoPageRoute(builder: (context) => register(language: language)));
-//    print(checklogin);
-
     if (checklogin != null) {
       setState(() {
         isLogin = checklogin.status;
@@ -838,7 +823,6 @@ class _pigAbooState extends State<pigAboo> {
 //    print('ResponseBody: ' + response.body); // Read Data in Array
       Map<String, dynamic> responseJson = json.decode(response.body);
       List<dynamic> data = responseJson["data"];
-//      print(data);
       return data.map((m) => new Menu.fromJson(m)).toList();
     } else {
       throw Exception('error :(');

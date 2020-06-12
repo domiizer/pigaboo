@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pigaboo/model/Login.dart';
 import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pigaboo/model/Pasa.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pigaboo/scoped_model/login_model.dart';
@@ -50,9 +49,9 @@ class _loginState extends State<login> {
             Column(
               children: <Widget>[
                 Text(
-                  'PIGABOO',
+                  'PIGABOO',textScaleFactor: 1.0,
                 ),
-                Text(widget.language.fromdoortodoor),
+                Text(widget.language.fromdoortodoor,textScaleFactor: 1.0),
               ],
             ),
           ],
@@ -126,7 +125,7 @@ class _loginState extends State<login> {
                               });
                             },
                             child: Text(
-                              "Login",
+                              "Login",textScaleFactor: 1.0,
                               style: TextStyle(fontSize: 20),
                             ),
                           );
@@ -140,7 +139,7 @@ class _loginState extends State<login> {
                           });
                         },
                         child: Text(
-                          "Register",
+                          "Register",textScaleFactor: 1.0,
                           style: TextStyle(
                               color: Color.fromRGBO(255, 176, 3, 1),
                               fontSize: 20),
@@ -170,6 +169,7 @@ class _loginState extends State<login> {
 //    prefs.setString('address',"117/210 บ้านร้องเรือคํา ซอย 20 ตำบลป่าแดด อำเภอเมืองเชียงใหม่ เชียงใหม่ 50100 ประเทศไทย");
     prefs.setString('flag',responseJson['flag']);
     prefs.setString('customerId',responseJson['customerId']);
+    print(prefs.getString('customerId'));
     setState(() {
       isLoading = false;
       Navigator.pop(context);
@@ -188,16 +188,13 @@ class _loginState extends State<login> {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseJson = json.decode(response.body);
         print(responseJson);
-        var LoginModel = Login.fromJson(responseJson);
         addStringToSF(responseJson);
-
-//        print(LoginModel.firstName);
       } else {
         setState(() {
           isLoading=false;
         });
         AlertDialog alert = AlertDialog(
-          title: Text("User does not exist"),
+          title: Text("User does not exist",textScaleFactor: 1.0),
         );
         showDialog(
           context: context,
