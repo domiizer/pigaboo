@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -9,8 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class DeliveryDetail extends StatefulWidget {
   Pasa language;
-
-  DeliveryDetail({this.language});
+  String order_code;
+  DeliveryDetail({this.language,this.order_code});
 
   @override
   _DeliveryDetailState createState() => _DeliveryDetailState();
@@ -22,6 +23,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
   @override
   void initState() {
     LoadData();
+    trackMyOrder();
     // TODO: implement initState
     super.initState();
   }
@@ -30,6 +32,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    print(widget.order_code);
   }
 
   @override
@@ -79,5 +82,45 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
       Map<String, dynamic> responseJson = json.decode(response.body);
       debugPrint(response.body, wrapWidth: 1024);
         });
+  }
+  trackMyOrder()async{
+    prefs = await SharedPreferences.getInstance();
+    print('inDelliver');
+    print(widget.order_code);
+    print(prefs.getString('customerId'));
+    await http
+        .post('https://api.pigaboo.me/getOrderByCode',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'orderCode': widget.order_code,
+          'customerId': prefs.getString('customerId'),
+        }))
+        .then((response) {
+          print(response.statusCode);
+      Map<String, dynamic> responseJson = json.decode(response.body);
+      print(responseJson['order_status']);
+//      debugPrint(response.body, wrapWidth: 1024);
+      Timer.periodic(new Duration(seconds: 10), (timer) async {
+        await http
+            .post('https://api.pigaboo.me/getOrderByCode',
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              'orderCode': widget.order_code,
+              'customerId': prefs.getString('customerId'),
+            }))
+            .then((response) {
+          print(response.statusCode);
+          Map<String, dynamic> responseJson = json.decode(response.body);
+          print(responseJson['order_status']);
+      });
+        if(responseJson['order_status']==4||responseJson['order_status']==-90) {
+          timer.cancel();
+        }
+      });
+    });
   }
 }

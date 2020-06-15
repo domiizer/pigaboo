@@ -1,6 +1,9 @@
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pigaboo/model/Login.dart';
 import 'package:pigaboo/model/Pasa.dart';
 import 'package:pigaboo/model/constanc.dart';
@@ -440,25 +443,40 @@ class _cartState extends State<cart> {
 
   _confirmOrder(Position position) async {
     List menuOrderList = new List();
+    List addonList = new List();
     for (int i = 0; i < widget.countForSelected.length; i++) {
       for (int j = 0; j < widget.countForSelected[i]['addon'].length; j++) {
         if (widget.countForSelected[i]['addon'][j]['name'] == 'NO_ADDON') {
-          menuOrderList.add({
-            'itemId': widget.countForSelected[i]['menu_id'],
-            'arrAddOn': null,
-            'amount': widget.countForSelected[i]['count'],
-            'extraComments': ''
-          });
+          addonList=null;
         } else {
-          menuOrderList.add({
-            'itemId': widget.countForSelected[i]['menu_id'],
-            'arrAddOn': widget.countForSelected[i]['addon'][j]['name'],
-            'amount': widget.countForSelected[i]['count'],
-            'extraComments': ''
-          });
+          addonList.add(widget.countForSelected[i]['addon'][j]['name']);
         }
       }
+      var jsonsss;
+      jsonsss={
+        "itemId": widget.countForSelected[i]['menu_id'],
+        "arrAddOn": jsonEncode(addonList),
+        "amount": widget.countForSelected[i]['count'],
+        "extraComments": "testExtra"
+      };
+      menuOrderList.add(jsonEncode(jsonsss));
     }
+    final f = new DateFormat('dd/MM/yyyy');
+    print({
+      "customerId": prefs.getString('customerId'),
+      "deliveryAddress": prefs.getString('address'),
+      "deliveryMethod": '1',
+      "deliveryRound": '1',
+      "extraComments": 'extraComments',
+      "lat": position.latitude.toString(),
+      "lng": position.longitude.toString(),
+      "menuOrderList": menuOrderList.toString(),
+      "paymentMethod": '1',
+      "shopAlias": widget.shopAlias,
+      "telephoneNumber": prefs.getString('phoneNumber'),
+      "orderDate":f.format(new DateTime.now()).toString(),
+    });
+
     String myURL = "https://api.pigaboo.me/createNewOrder";
     http.post(myURL, headers: {
 //      'Accept': 'application/json'
@@ -467,26 +485,32 @@ class _cartState extends State<cart> {
       "deliveryAddress": prefs.getString('address'),
       "deliveryMethod": '1',
       "deliveryRound": '1',
-      "extraComments": '',
+      "extraComments": 'extraComments',
       "lat": position.latitude.toString(),
       "lng": position.longitude.toString(),
       "menuOrderList": menuOrderList.toString(),
       "paymentMethod": '1',
       "shopAlias": widget.shopAlias,
       "telephoneNumber": prefs.getString('phoneNumber'),
+      "orderDate":f.format(new DateTime.now()).toString(),
     }).then((response) {
       print('responseStatuscode : ' + response.statusCode.toString());
       if (response.statusCode == 200) {
         print(response.body);
-//        Navigator.push(
-//            context,
-//            CupertinoPageRoute(
-//                builder: (context) => DeliveryDetail(language: widget.language)));
+        Map<String, dynamic> responseJson = json.decode(response.body);
+        if(responseJson['status']==true) {
+          Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (context) =>
+                      DeliveryDetail(language: widget.language,order_code: responseJson['detail']['order_code'])));
+        }
       } else {
         print('not response');
         throw Exception('error :(');
       }
     });
+
   }
 
   multi(int num1, num2) {

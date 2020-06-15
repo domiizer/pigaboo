@@ -758,8 +758,8 @@ class _merchantsState extends State<merchants> {
         checkis.add(false);
         addonPrice.add(int.parse(addon[i]['price'].toString()));
       }
-      print(addon);
-      print(addonPrice[0].runtimeType);
+//      print(addon);
+//      print(addonPrice[0].runtimeType);
     } else {}
     showModalBottomSheet(
         isScrollControlled: true,
