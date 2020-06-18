@@ -225,16 +225,9 @@ class _cartState extends State<cart> {
                                     child: Container(
                                       alignment: Alignment.centerRight,
                                       child: Text(multi(
+                                                  widget.countForSelected[index]['price'] ,
                                                   widget.countForSelected[index]
-                                                          ['price'] +
-                                                      int.parse(widget
-                                                          .countForSelected[
-                                                              index]['addon'][0]
-                                                              ['price']
-                                                          .toString()),
-                                                  widget.countForSelected[index]
-                                                      ['count'])
-                                              .toString() +
+                                                      ['count'],widget.countForSelected[index]['addon']).toString() +
                                           '฿',textScaleFactor: 1.0),
                                     ),
                                   ),
@@ -330,7 +323,7 @@ class _cartState extends State<cart> {
   _showDialogNomenu(){
     showDialog(context: context, builder: (BuildContext context){
       return AlertDialog(
-        title: Text('no Item',textScaleFactor: 1.0),
+        title: Text(widget.language.noitemalert,textScaleFactor: 1.0),
       );
     });
   }
@@ -443,13 +436,15 @@ class _cartState extends State<cart> {
 
   _confirmOrder(Position position) async {
     List menuOrderList = new List();
-    List addonList = new List();
+
     for (int i = 0; i < widget.countForSelected.length; i++) {
+      List addonList = new List();
       for (int j = 0; j < widget.countForSelected[i]['addon'].length; j++) {
         if (widget.countForSelected[i]['addon'][j]['name'] == 'NO_ADDON') {
           addonList=null;
         } else {
           addonList.add(widget.countForSelected[i]['addon'][j]['name']);
+          print(widget.countForSelected[i]['addon'][j]['name'].toString());
         }
       }
       var jsonsss;
@@ -513,8 +508,12 @@ class _cartState extends State<cart> {
 
   }
 
-  multi(int num1, num2) {
-    return num1 * num2;
+  multi(int price, count,addon) {
+    int addontotalprice=0;
+    for(int i =0;i<addon.length;i++){
+      addontotalprice+=int.parse(addon[i]['price'].toString());
+    }
+    return (price+addontotalprice)*count;
   }
 
   int amounttotal(List<dynamic> countForSelected) {

@@ -36,7 +36,7 @@ class _merchantsState extends State<merchants> {
 
   bool isLoadData = true;
   bool isLogin = false;
-
+  int floatcount=0;
   List countForItem = new List();
   List countForSelected = new List();
   List popular_Categories = new List();
@@ -270,7 +270,7 @@ class _merchantsState extends State<merchants> {
                                                     Container(
                                                       color: Colors.deepOrange,
                                                       child: Text(
-                                                        'Hot',textScaleFactor: 1.0,
+                                                        widget.language.hot,textScaleFactor: 1.0,
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.white),
@@ -491,7 +491,7 @@ class _merchantsState extends State<merchants> {
                                                                       ? null
                                                                       : Center(
                                                                           child:
-                                                                              Text(countForItem[index][index2]['count'].toString(),textScaleFactor: 1.0)),
+                                                                              Text(countForItem[index][index2]['count'].toString(),textScaleFactor: 1.0,style: TextStyle(color: Colors.white),)),
                                                                 ),
                                                                 subCategoties[index]
                                                                                 [
@@ -564,12 +564,23 @@ class _merchantsState extends State<merchants> {
                 ),
           floatingActionButton: Opacity(
             opacity: 0.85,
-            child: FloatingActionButton(
-              backgroundColor: Color(hexColor(widget.merchantTheme.mainColour)),
-              child: Icon(Icons.shopping_cart),
-              onPressed: () {
-                _navigatorToCart();
-              },
+            child: Stack(
+              children: <Widget>[
+                FloatingActionButton(
+                  backgroundColor: Color(hexColor(widget.merchantTheme.mainColour)),
+                  child: Icon(Icons.shopping_cart),
+                  onPressed: () {
+                    _navigatorToCart();
+                  },
+                ),
+                floatcount==0?Text(''):Positioned(
+                  right: 0,
+                    top: -10,
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                        color:Colors.red,child: Text(floatcount.toString(),style: TextStyle(color: Colors.white),))),
+              ],
+              overflow: Overflow.visible,
             ),
           )),
     );
@@ -592,11 +603,13 @@ class _merchantsState extends State<merchants> {
             countForItem[i][j]['count'] = 0;
           }
         }
+        floatcount=0;
         for (int i = 0; i < countForItem.length; i++) {
           for (int j = 0; j < countForItem[i].length; j++) {
             for (int k = 0; k < countForSelected.length; k++)
               if (countForItem[i][j]['menu_id'] == value[k]['menu_id']) {
                 countForItem[i][j]['count'] += value[k]['count'];
+                floatcount+=value[k]['count'];
               }
           }
         }
@@ -801,10 +814,16 @@ class _merchantsState extends State<merchants> {
                               ),
                               Row(
                                 children: <Widget>[
-                                  Text(
-                                    '    ' + _menuList['description'],textScaleFactor: 1.0,
-                                    style: TextStyle(
-                                        fontSize: 10, color: Colors.black87),
+                                  Expanded(
+                                    child: Container(
+//                                      color: Colors.red,
+                                      margin: EdgeInsets.fromLTRB(0, 0, 50, 0),
+                                      child: Text(//fix this
+                                        '    ' + _menuList['description'],textScaleFactor: 1.0,
+                                        style: TextStyle(
+                                            fontSize: 10, color: Colors.black87),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -941,7 +960,8 @@ class _merchantsState extends State<merchants> {
                           addCartItem(objItem);
                           Navigator.pop(context);
                           this.setState(() {
-                            countForItem[index1][index2]['count']++;
+                            countForItem[index1][index2]['count']+=count;
+                            floatcount+=count;
                           });
                         },
                         child: Container(

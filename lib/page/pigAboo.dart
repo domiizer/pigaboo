@@ -183,7 +183,7 @@ class _pigAbooState extends State<pigAboo> {
                         //head_pic
                         width: constanc.ScreenWidth,
                         child: Image.network(
-                          pigAboo.imagep,
+                          'https://images.pexels.com/photos/1109197/pexels-photo-1109197.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
                           fit: BoxFit.cover,
                           width: constanc.ScreenWidth,
                           height: 200,

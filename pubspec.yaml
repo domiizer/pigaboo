@@ -30,6 +30,7 @@ dependencies:
   geolocator: ^5.3.2+2
   shared_preferences: ^0.5.7+3
   intl: ^0.16.1
+  percent_indicator: ^2.1.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -58,6 +59,13 @@ flutter:
     - images/Line.png
     - images/Tel.png
     - images/Logo_black.png
+    - images/OrderDelivered.png
+    - images/OrderOnTheWay.png
+    - images/OrderPlaced.png
+    - images/OrderPrepare.png
+    - images/check.png
+    - images/happybread.jpeg
+    - images/saltadding.jpeg
   #    - images/ttt.jpg
   #  - images/a_dot_ham.jpeg
 
