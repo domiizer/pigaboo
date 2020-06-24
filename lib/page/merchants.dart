@@ -9,6 +9,7 @@ import 'package:pigaboo/model/Merchantpayment.dart';
 import 'package:pigaboo/model/Merchanttheme.dart';
 import 'package:pigaboo/model/Pasa.dart';
 import 'package:pigaboo/model/constanc.dart';
+import 'package:pigaboo/page/DeliveryDetail.dart';
 import 'package:pigaboo/page/cart.dart';
 import 'package:pigaboo/page/login.dart';
 import 'package:pigaboo/page/register.dart';
@@ -33,7 +34,8 @@ class merchants extends StatefulWidget {
 
 class _merchantsState extends State<merchants> {
   SharedPreferences prefs;
-  bool isLoadDelivery = true;
+  bool getAllUserOrder = true;
+  bool isLoadOrder = false;
   bool isLoadData = true;
   bool isLogin = false;
   int floatcount = 0;
@@ -87,7 +89,32 @@ class _merchantsState extends State<merchants> {
                 ),
                 IconButton(
                   onPressed: () {
-                    _showAlertOrderCode();
+//                    _showAlertOrderCode();
+//                    showGeneralDialog(
+//                        context: context,
+//                        pageBuilder: (context, animation1, animation2) {
+//                          return MyDialog(widget.merchantData.alias);
+//                        });
+                    showGeneralDialog(
+                        barrierColor: Colors.black.withOpacity(0.5),
+                        transitionBuilder: (context, a1, a2, widgets) {
+                          final curvedValue =
+                              Curves.easeInOutBack.transform(a1.value) - 1.0;
+                          return Transform(
+                            transform: Matrix4.translationValues(
+                                0.0, curvedValue * 200, 0.0),
+                            child: Opacity(
+                              opacity: a1.value,
+                              child: MyDialog(
+                                  widget.merchantData.alias, widget.language,widget.merchantTheme),
+                            ),
+                          );
+                        },
+                        transitionDuration: Duration(milliseconds: 200),
+                        barrierDismissible: true,
+                        barrierLabel: '',
+                        context: context,
+                        pageBuilder: (context, animation1, animation2) {});
                   },
                   icon: Icon(Icons.description),
                 ),
@@ -712,8 +739,6 @@ class _merchantsState extends State<merchants> {
               'shopAlias': widget.merchantData.alias,
             }))
         .then((response) {
-      _getAllUserOrdersActive();
-      _getAllUserOrdersHistory();
       Map<String, dynamic> responseJson = json.decode(response.body);
       debugPrint(response.body, wrapWidth: 1024);
 
@@ -746,6 +771,9 @@ class _merchantsState extends State<merchants> {
       }
 
       return data.map((m) => new MerchantAllMenuList.fromJson(m)).toList();
+    });
+    setState(() {
+      isLoadData = false;
     });
   }
 
@@ -1064,157 +1092,213 @@ class _merchantsState extends State<merchants> {
       });
     }
   }
+}
 
-  _showAlertOrderCode() {
-    return showGeneralDialog(
-        barrierColor: Colors.black.withOpacity(0.5),
-        transitionBuilder: (context, a1, a2, widget) {
-          final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
-          return StatefulBuilder(builder: (context, setState) {
-            return Transform(
-              transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
-              child: Opacity(
-                opacity: a1.value,
-                child: AlertDialog(
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16.0)),
-                  title: Row(
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _getAllUserOrdersActive();
-                            isLoadDelivery=true;
-                          });
-                        },
-                        icon: Icon(Icons.local_shipping),
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 2,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _getAllUserOrdersHistory();
-                            isLoadDelivery=false;
-                          });
-                        },
-                        icon: Icon(Icons.history),
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 2,
-                        ),
-                      ),
-//                    Expanded(child: Container(height: 2,),),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.cancel),
-                        color: Colors.grey,
-                      ),
-                    ],
-                  ),
-                  content: Container(
-                    width: constanc.ScreenWidth,
-                    height: constanc.ScreenHeight / 3,
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[],
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                      child: Text(
-                                    this.widget.language.time,
-                                    textAlign: TextAlign.left,
-                                  ))),
-                              Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                      child: Text(
-                                    this.widget.language.price,
-                                    textAlign: TextAlign.center,
-                                  ))),
-                              Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                      child: Text(this.widget.language.status,
-                                    textAlign: TextAlign.right,
-                                  ))),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-//                        child: Container(child: Center(child:  CircularProgressIndicator(),),),
-                            child: ListView.separated(
-                                    shrinkWrap: true,
-                                    physics: BouncingScrollPhysics(),
-                                    itemCount: isLoadDelivery==true?allOrderedActiveList.length:allOrderedHistoryList.length,
-                                separatorBuilder: (BuildContext context, int index) =>
-                                    Divider(height: 15, color: Colors.black54),
-                                itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                              flex: 1,
-                                              child: Container(
-                                                child: Text(
-                                                  isLoadDelivery==true?allOrderedActiveList[index]
-                                                          ['timestamp'].toString()
-                                                      :allOrderedHistoryList[index]['timestamp'].toString(),
-                                                ),
-                                              )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: Container(
-                                                child: Text(
-                                                  isLoadDelivery==true?allOrderedActiveList[index]
-                                                          ['total_payment'].toString()
-                                                      :allOrderedHistoryList[index]['total_payment'].toString(),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: Container(
-                                                child: Text(
-                                                  isLoadDelivery==true?allOrderedActiveList[index]
-                                                          ['order_status'].toString()
-                                                      :allOrderedHistoryList[index]['order_status'].toString(),
-                                                  textAlign: TextAlign.right,
-                                                ),
-                                              )),
-                                        ],
-                                      );
-                                    })),
-                      ],
-                    ),
-                  ),
-                ),
+class MyDialog extends StatefulWidget {
+  String alias;
+  Pasa language;
+  Merchanttheme theme;
+  MyDialog(this.alias, this.language,this.theme);
+
+  @override
+  _MyDialogState createState() => new _MyDialogState();
+}
+
+class _MyDialogState extends State<MyDialog> {
+  Color _c = Colors.redAccent;
+  List allOrderedActiveList = new List();
+  List allOrderedHistoryList = new List();
+  bool getAllUserOrder = true;
+  bool isLoadOrder = true;
+  SharedPreferences prefs;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isLoadOrder = true;
+    _getAllUserOrdersActive();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      title: Row(
+        children: <Widget>[
+          RaisedButton(
+            color: getAllUserOrder?Color(hexColor(widget.theme.mainColour)):null,
+            onPressed: (){
+              setState(() {
+                isLoadOrder = true;
+                getAllUserOrder = true;
+              });
+              _getAllUserOrdersActive();
+            },
+            child: Row(
+              children: <Widget>[
+            Icon(Icons.local_shipping),
+              SizedBox(width: 10,),
+              Text('Active'),
+          ],),),
+
+          Expanded(
+            child: Container(
+              height: 2,
+            ),
+          ),
+          RaisedButton(
+            color: getAllUserOrder?null:Color(hexColor(widget.theme.mainColour)),
+            onPressed: (){
+              setState(() {
+                isLoadOrder = true;
+                getAllUserOrder = false;
+              });
+              _getAllUserOrdersHistory();
+            },
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.history),
+                SizedBox(width: 10,),
+                Text('History'),
+              ],),),
+
+        ],
+      ),
+      content: Container(
+        width: constanc.ScreenWidth,
+        height: constanc.ScreenHeight / 3,
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[],
+            ),
+            Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  color:  Color(hexColor(widget.theme.mainColour)),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      topRight: Radius.circular(10.0))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                          child: Text(
+                        this.widget.language.time,
+                        textAlign: TextAlign.left,
+                      ))),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                          child: Text(
+                        this.widget.language.price,
+                        textAlign: TextAlign.center,
+                      ))),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                          child: Text(
+                        this.widget.language.status,
+                        textAlign: TextAlign.right,
+                      ))),
+                ],
               ),
-            );
-          });
-        },
-        transitionDuration: Duration(milliseconds: 200),
-        barrierDismissible: true,
-        barrierLabel: '',
-        context: context,
-        pageBuilder: (context, animation1, animation2) {});
+            ),
+            Expanded(
+//                        child: Container(child: Center(child:  CircularProgressIndicator(),),),
+                child: isLoadOrder == true
+                    ? Container(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: getAllUserOrder == true
+                            ? allOrderedActiveList.length
+                            : allOrderedHistoryList.length,
+                        separatorBuilder: (BuildContext context, int index) =>
+                            Divider(height: 15, color: Colors.black54),
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              print(allOrderedActiveList[index]['order_code']
+                                  .toString());
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) => DeliveryDetail(
+                                            language: widget.language,
+                                            order_code:
+                                                allOrderedActiveList[index]
+                                                    ['order_code'],
+                                          )));
+                            },
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(10 , 0, 10, 0),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        child: Text(
+                                          getAllUserOrder == true
+                                              ? allOrderedActiveList[index]
+                                                      ['timestamp']
+                                                  .toString()
+                                              : allOrderedHistoryList[index]
+                                                      ['timestamp']
+                                                  .toString(),
+                                        ),
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        child: Text(
+                                          getAllUserOrder == true
+                                              ? allOrderedActiveList[index]
+                                                      ['total_payment']
+                                                  .toString()
+                                              : allOrderedHistoryList[index]
+                                                      ['total_payment']
+                                                  .toString(),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        child: Text(
+                                          getAllUserOrder == true
+                                              ? allOrderedActiveList[index]
+                                                      ['order_status']
+                                                  .toString()
+                                              : allOrderedHistoryList[index]
+                                                      ['order_status']
+                                                  .toString(),
+                                          textAlign: TextAlign.right,
+                                        ),
+                                      )),
+                                ],
+                              ),
+                            ),
+                          );
+                        })),
+          ],
+        ),
+      ),
+    );
   }
 
   _getAllUserOrdersActive() async {
-    allOrderedActiveList = new List();
-    await http.post('https://api.pigaboo.me/getAllUserOrdersActive',
+    prefs = await SharedPreferences.getInstance();
+    await http
+        .post('https://api.pigaboo.me/getAllUserOrdersActive',
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
@@ -1222,23 +1306,23 @@ class _merchantsState extends State<merchants> {
               'customerId': prefs.getString('customerId'),
             }))
         .then((response) {
-//      List<dynamic> responseJson = json.decode(response.body);
       print(response.statusCode);
-      for(int i=0;i<json.decode(response.body).length;i++){
-        if(json.decode(response.body)[i]['shop_alias']==widget.merchantData.alias){
+      for (int i = 0; i < json.decode(response.body).length; i++) {
+        if (json.decode(response.body)[i]['shop_alias'] == widget.alias) {
           allOrderedActiveList.add(json.decode(response.body)[i]);
         }
       }
-//      allOrderedActiveList = json.decode(response.body);
-//      debugPrint(responseJson[0].toString(), wrapWidth: 1024);
       print(allOrderedActiveList.toString());
       print('in active');
+      setState(() {
+        isLoadOrder = false;
+      });
     });
   }
 
   void _getAllUserOrdersHistory() async {
-
-    await http.post('https://api.pigaboo.me/getAllUserOrdersHistory',
+    await http
+        .post('https://api.pigaboo.me/getAllUserOrdersHistory',
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
@@ -1246,19 +1330,20 @@ class _merchantsState extends State<merchants> {
               'customerId': prefs.getString('customerId'),
             }))
         .then((response) {
-//      List<dynamic> responseJson = json.decode(response.body);
       print(response.statusCode);
-//      allOrderedList = json.decode(response.body);
       setState(() {
         allOrderedHistoryList = json.decode(response.body);
         debugPrint(allOrderedHistoryList.toString(), wrapWidth: 1024);
       });
-//      debugPrint(responseJson[0].toString(), wrapWidth: 1024);
-//      print(responseJson[0].toString());
       print('in history');
       setState(() {
-        isLoadData = false;
+        isLoadOrder = false;
       });
     });
+  }
+  hexColor(String hexcolorcode) {
+    String colornew = '0xff' + hexcolorcode;
+    int colorint = int.parse(colornew);
+    return colorint;
   }
 }
