@@ -48,7 +48,7 @@ class _merchantsState extends State<merchants> {
   List allOrderedActiveList;
   List allOrderedHistoryList = new List();
   var objinmerchant;
-
+  final _Scrollcontroller = ScrollController();
   @override
   void initState() {
     // TODO: implement initState
@@ -200,47 +200,51 @@ class _merchantsState extends State<merchants> {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: popular_Categories.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    margin: EdgeInsets.fromLTRB(10, 10, 20, 10),
-                                    width: constanc.ScreenWidth / 3,
-                                    color: Colors.white,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          width: constanc.ScreenWidth / 3 - 50,
-                                          height: constanc.ScreenWidth / 3 - 50,
-                                          decoration: new BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                    subCategoties[index][0]
-                                                        ['img_url']),
+                                  return GestureDetector(
+                                    onTap:  (){_animateToIndex(index);
+                                    print('tsppawe');},
+                                    child: Container(
+                                      margin: EdgeInsets.fromLTRB(10, 10, 20, 10),
+                                      width: constanc.ScreenWidth / 3,
+                                      color: Colors.white,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            width: constanc.ScreenWidth / 3 - 50,
+                                            height: constanc.ScreenWidth / 3 - 50,
+                                            decoration: new BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: NetworkImage(
+                                                      subCategoties[index][0]
+                                                          ['img_url']),
 //                                                image: NetworkImage(
 //                                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSN3lPsPRhwrCLlWw9OizH4_pVebhxDIjrhszJ6feDV73fMxNXf&usqp=CAU'),
-                                              )),
+                                                )),
 //                                      ),
-                                        ),
-                                        Text(
-                                          popular_Categories[index].toString(),
-                                          textScaleFactor: 1.0,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
                                           ),
-                                        ),
-                                        Text(
-                                          'ราคาโดยประมาณ ฿' +
-                                              avgPrice[index].toString(),
-                                          textScaleFactor: 1.0,
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      ],
+                                          Text(
+                                            popular_Categories[index].toString(),
+                                            textScaleFactor: 1.0,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            'ราคาโดยประมาณ ฿' +
+                                                avgPrice[index].toString(),
+                                            textScaleFactor: 1.0,
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   );
                                 }),
@@ -388,15 +392,19 @@ class _merchantsState extends State<merchants> {
                                             ),
                                             Column(
                                               children: <Widget>[
-                                                Text(
-                                                  popular_Categories[index]
-                                                      .toString(),
-                                                  textScaleFactor: 1.0,
-                                                  style:
-                                                      TextStyle(fontSize: 20),
+                                                Container(
+                                                  width:constanc.ScreenWidth,
+                                                  child: Text(
+                                                    popular_Categories[index]
+                                                        .toString(),
+                                                    textScaleFactor: 1.0,
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
                                                 ),
                                                 Container(
                                                   child: ListView.builder(
+                                                    controller: _Scrollcontroller,
                                                     physics:
                                                         NeverScrollableScrollPhysics(),
                                                     shrinkWrap: true,
@@ -408,7 +416,7 @@ class _merchantsState extends State<merchants> {
                                                     itemBuilder:
                                                         (BuildContext context,
                                                             int index2) {
-                                                      return Card(
+                                                      return Card(//fix this
                                                         shape:
                                                             RoundedRectangleBorder(
                                                           borderRadius:
@@ -416,7 +424,8 @@ class _merchantsState extends State<merchants> {
                                                                   .circular(
                                                                       15.0),
                                                         ),
-                                                        child: Column(
+                                                        child: Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: <Widget>[
                                                             ClipRRect(
                                                               borderRadius:
@@ -432,9 +441,8 @@ class _merchantsState extends State<merchants> {
 //                                                                'https://f.ptcdn.info/963/022/000/1409582663-01-o.jpg',
                                                                 fit: BoxFit
                                                                     .cover,
-                                                                width: double
-                                                                    .maxFinite,
-                                                                height: 200,
+                                                                width: 150,
+                                                                height: 100,
                                                                 loadingBuilder: (BuildContext
                                                                         context,
                                                                     Widget
@@ -445,9 +453,8 @@ class _merchantsState extends State<merchants> {
                                                                       null)
                                                                     return child;
                                                                   return Container(
-                                                                    width: double
-                                                                        .maxFinite,
-                                                                    height: 200,
+                                                                    width: 150,
+                                                                    height: 100,
                                                                     child:
                                                                         Center(
                                                                       child:
@@ -463,136 +470,83 @@ class _merchantsState extends State<merchants> {
                                                                 },
                                                               ),
                                                             ),
-                                                            Container(
-                                                              margin: EdgeInsets
-                                                                  .all(15),
-                                                              child: Row(
-                                                                children: <
-                                                                    Widget>[
-                                                                  Container(
-                                                                    width: constanc
-                                                                            .ScreenWidth *
-                                                                        0.7,
-                                                                    child: Text(
-                                                                      subCategoties[index][index2]
-                                                                              [
-                                                                              'menu_name']
-                                                                          .toString(),
-                                                                      textScaleFactor:
-                                                                          1.0,
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              20),
-                                                                    ),
-                                                                  ),
-                                                                  Expanded(
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          10,
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                    width: constanc
-                                                                            .ScreenWidth *
-                                                                        0.1,
-                                                                    child: Text(
-                                                                      subCategoties[index][index2]
-                                                                              [
-                                                                              'price']
-                                                                          .toString(),
-                                                                      textScaleFactor:
-                                                                          1.0,
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              20),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Row(
-                                                              children: <
-                                                                  Widget>[
-                                                                Expanded(
-                                                                  child:
+                                                            Expanded(
+                                                              child: Column(
+                                                                children: <Widget>[
+                                                                  Row(
+                                                                    children: <Widget>[
                                                                       Container(
-                                                                    height: 10,
-                                                                  ),
-                                                                ),
-                                                                Container(
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10),
-                                                                    color: countForItem[index][index2]['count'] ==
-                                                                            0
-                                                                        ? null
-                                                                        : Colors
-                                                                            .red,
-                                                                  ),
-                                                                  margin: EdgeInsets
-                                                                      .fromLTRB(
-                                                                          0,
-                                                                          50,
-                                                                          30,
-                                                                          20),
-                                                                  width: 30,
-                                                                  height: 30,
-                                                                  child: countForItem[index][index2]
-                                                                              [
-                                                                              'count'] ==
-                                                                          0
-                                                                      ? null
-                                                                      : Center(
-                                                                          child:
-                                                                              Text(
-                                                                          countForItem[index][index2]['count']
+                                                                        margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                                                        child: Text(
+                                                                          subCategoties[index][index2]
+                                                                                  [
+                                                                                  'menu_name']
+                                                                              .toString(),style: TextStyle(fontSize: 10),
+                                                                          textScaleFactor:
+                                                                              1.0,
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                        child:
+                                                                            Container(
+                                                                          height:
+                                                                              5,
+                                                                        ),
+                                                                      ),
+                                                                      Container(
+                                                                        margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
+                                                                        child: Text(
+                                                                          subCategoties[index][index2]
+                                                                                  [
+                                                                                  'price']
                                                                               .toString(),
                                                                           textScaleFactor:
                                                                               1.0,
-                                                                          style:
-                                                                              TextStyle(color: Colors.white),
-                                                                        )),
-                                                                ),
-                                                                subCategoties[index]
-                                                                                [
-                                                                                index2]
-                                                                            [
-                                                                            'isAvailable'] ==
-                                                                        '0'
-                                                                    ? Container(
-                                                                        margin: EdgeInsets.fromLTRB(
-                                                                            0,
-                                                                            50,
-                                                                            30,
-                                                                            20),
-                                                                        child: Text(
-                                                                            'out of stock',
-                                                                            textScaleFactor:
-                                                                                1.0))
-                                                                    : GestureDetector(
-                                                                        child:
-                                                                            Container(
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10),
-                                                                            color:
-                                                                                Colors.amber,
-                                                                          ),
-                                                                          margin: EdgeInsets.fromLTRB(
-                                                                              0,
-                                                                              50,
-                                                                              30,
-                                                                              20),
-                                                                          width:
-                                                                              30,
-                                                                          height:
-                                                                              30,
+                                                                          style: TextStyle(
+                                                                              fontSize:
+                                                                                  10),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Row(children: <Widget>[
+                                                                    Expanded(child: Container(
+                                                                      height: 10,),),
+                                                                    Container(
+                                                                      margin: EdgeInsets.fromLTRB(0, 30, 20, 0),
+                                                                      decoration: BoxDecoration(
+                                                                          borderRadius:
+                                                                        BorderRadius.circular(5),
+                                                                        color: countForItem[index][index2]['count'] == 0
+                                                                        ? null
+                                                                        : Colors.red,
+                                                                      ),
+                                                                    width: 20,
+                                                                    height: 20,
+                                                                        child: countForItem[index][index2]['count'] == 0
+                                                                      ? null
+                                                                      : Center(
                                                                           child:
-                                                                              Icon(Icons.add),
+                                                                              Text(countForItem[index][index2]['count'].toString(),
+                                                                          textScaleFactor: 1.0,
+                                                                          style: TextStyle(color: Colors.white),
+                                                                        )),
+                                                                    ),
+                                                                    subCategoties[index][index2]['isAvailable'] == '0'
+                                                                    ? Container(
+                                                                        margin: EdgeInsets.fromLTRB(0, 30, 20, 0),
+                                                                        child: Text('out of stock', textScaleFactor: 1.0),
+                                                                    )
+                                                                    : GestureDetector(
+                                                                        child: Container(
+                                                                          decoration: BoxDecoration(
+                                                                            borderRadius: BorderRadius.circular(5),
+                                                                            color: Colors.amber,
+                                                                          ),
+                                                                          margin: EdgeInsets.fromLTRB(0, 30, 20, 0),
+                                                                          width: 20,
+                                                                          height: 20,
+                                                                          child: Icon(Icons.add,size: 20,),
                                                                         ),
                                                                         onTap:
                                                                             () {
@@ -603,7 +557,9 @@ class _merchantsState extends State<merchants> {
                                                                               index2);
                                                                         },
                                                                       ),
-                                                              ],
+                                                                  ],),
+                                                                ],
+                                                              ),
                                                             ),
                                                           ],
                                                         ),
@@ -657,7 +613,7 @@ class _merchantsState extends State<merchants> {
           )),
     );
   }
-
+  _animateToIndex(i) => _Scrollcontroller.animateTo(100.00 * i, duration: Duration(seconds: 2), curve: Curves.fastOutSlowIn);
   _navigatorToCart() async {
     print('userSended');
     print(widget.merchantData.alias);
@@ -894,7 +850,6 @@ class _merchantsState extends State<merchants> {
 //                                      color: Colors.red,
                                       margin: EdgeInsets.fromLTRB(0, 0, 50, 0),
                                       child: Text(
-                                        //fix this
                                         '    ' + _menuList['description'],
                                         textScaleFactor: 1.0,
                                         style: TextStyle(
