@@ -475,36 +475,46 @@ class _merchantsState extends State<merchants> {
                                                                 children: <Widget>[
                                                                   Row(
                                                                     children: <Widget>[
-                                                                      Container(
-                                                                        margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                                                                        child: Text(
-                                                                          subCategoties[index][index2]
-                                                                                  [
-                                                                                  'menu_name']
-                                                                              .toString(),style: TextStyle(fontSize: 10),
-                                                                          textScaleFactor:
-                                                                              1.0,
-                                                                        ),
-                                                                      ),
                                                                       Expanded(
-                                                                        child:
-                                                                            Container(
-                                                                          height:
-                                                                              5,
+                                                                        flex:5,
+                                                                        child: Container(
+                                                                          width: constanc.ScreenWidth,
+                                                                          height: 25,
+                                                                          margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                                                          child: Text(
+                                                                            subCategoties[index][index2]
+                                                                                    [
+                                                                                    'menu_name']
+                                                                                .toString(),style: TextStyle(fontSize: 10),
+                                                                            textScaleFactor:
+                                                                                1.0,
+                                                                          ),
                                                                         ),
                                                                       ),
-                                                                      Container(
-                                                                        margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
-                                                                        child: Text(
-                                                                          subCategoties[index][index2]
-                                                                                  [
-                                                                                  'price']
-                                                                              .toString(),
-                                                                          textScaleFactor:
-                                                                              1.0,
-                                                                          style: TextStyle(
-                                                                              fontSize:
-                                                                                  10),
+//                                                                      Expanded(
+//                                                                        child:
+//                                                                            Container(
+//                                                                          height:
+//                                                                              5,
+//                                                                        ),
+//                                                                      ),
+                                                                      Expanded(
+                                                                        flex:1,
+                                                                        child: Container(
+                                                                          width: constanc.ScreenWidth,
+                                                                          height: 25,
+                                                                          margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
+                                                                          child: Text(
+                                                                            subCategoties[index][index2]
+                                                                                    [
+                                                                                    'price']
+                                                                                .toString(),
+                                                                            textScaleFactor:
+                                                                                1.0,
+                                                                            style: TextStyle(
+                                                                                fontSize:
+                                                                                    10),
+                                                                          ),
                                                                         ),
                                                                       ),
                                                                     ],
@@ -513,7 +523,7 @@ class _merchantsState extends State<merchants> {
                                                                     Expanded(child: Container(
                                                                       height: 10,),),
                                                                     Container(
-                                                                      margin: EdgeInsets.fromLTRB(0, 30, 20, 0),
+                                                                      margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
                                                                       decoration: BoxDecoration(
                                                                           borderRadius:
                                                                         BorderRadius.circular(5),
@@ -543,7 +553,7 @@ class _merchantsState extends State<merchants> {
                                                                             borderRadius: BorderRadius.circular(5),
                                                                             color: Colors.amber,
                                                                           ),
-                                                                          margin: EdgeInsets.fromLTRB(0, 30, 20, 0),
+                                                                          margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
                                                                           width: 20,
                                                                           height: 20,
                                                                           child: Icon(Icons.add,size: 20,),
