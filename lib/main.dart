@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
+import 'package:pigaboo/page/merchants.dart';
 import 'package:pigaboo/page/pigAboo.dart';
 import 'package:http/http.dart' as http;
 import 'package:pigaboo/scoped_model/login_model.dart';
@@ -24,11 +25,11 @@ class MyApp extends StatelessWidget {
       model: loginmodel(),
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: pigAboo(),
+          home: merchants(),
           theme: ThemeData(
               primarySwatch: Colors.grey,
               primaryTextTheme:
-                  TextTheme(title: TextStyle(color: Colors.black)))),
+              TextTheme(title: TextStyle(color: Colors.black)))),
     );
   }
 }

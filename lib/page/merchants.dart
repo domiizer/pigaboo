@@ -48,11 +48,14 @@ class _merchantsState extends State<merchants> {
   List allOrderedActiveList;
   List allOrderedHistoryList = new List();
   var objinmerchant;
-  final _Scrollcontroller = ScrollController();
+  List taptoscroll=new List();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    for(int i = 0; i<20;i++){
+      taptoscroll.add(GlobalKey());
+    }
     LoadData();
   }
 
@@ -119,7 +122,7 @@ class _merchantsState extends State<merchants> {
                   icon: Icon(Icons.description),
                 ),
 //                SizedBox(width: 10,),
-                isLogin != false
+                isLogin == true
                     ? GestureDetector(
                         onTap: () {},
                         child: Container(
@@ -201,8 +204,9 @@ class _merchantsState extends State<merchants> {
                                 itemCount: popular_Categories.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return GestureDetector(
-                                    onTap:  (){_animateToIndex(index);
-                                    print('tsppawe');},
+                                    onTap:  (){
+                                      Scrollable.ensureVisible(taptoscroll[index].currentContext);
+                                    print('index: '+index.toString());},
                                     child: Container(
                                       margin: EdgeInsets.fromLTRB(10, 10, 20, 10),
                                       width: constanc.ScreenWidth / 3,
@@ -393,6 +397,7 @@ class _merchantsState extends State<merchants> {
                                             Column(
                                               children: <Widget>[
                                                 Container(
+                                                  key: taptoscroll[index],
                                                   width:constanc.ScreenWidth,
                                                   child: Text(
                                                     popular_Categories[index]
@@ -404,7 +409,6 @@ class _merchantsState extends State<merchants> {
                                                 ),
                                                 Container(
                                                   child: ListView.builder(
-                                                    controller: _Scrollcontroller,
                                                     physics:
                                                         NeverScrollableScrollPhysics(),
                                                     shrinkWrap: true,
@@ -623,7 +627,6 @@ class _merchantsState extends State<merchants> {
           )),
     );
   }
-  _animateToIndex(i) => _Scrollcontroller.animateTo(100.00 * i, duration: Duration(seconds: 2), curve: Curves.fastOutSlowIn);
   _navigatorToCart() async {
     print('userSended');
     print(widget.merchantData.alias);
@@ -702,7 +705,7 @@ class _merchantsState extends State<merchants> {
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(<String, String>{
-              'shopAlias': widget.merchantData.alias,
+              'shopAlias': 'KLNK',
             }))
         .then((response) {
       Map<String, dynamic> responseJson = json.decode(response.body);

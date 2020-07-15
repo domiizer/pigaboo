@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pigaboo/model/Login.dart';
 import 'package:http/http.dart' as http;
 import 'package:pigaboo/model/Pasa.dart';
+import 'package:pigaboo/page/pigAboo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pigaboo/scoped_model/login_model.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -26,9 +27,9 @@ class _loginState extends State<login> {
   @override
   void dispose() {
     // TODO: implement dispose
+    super.dispose();
     phoneNumberController.dispose();
     passwordController.dispose();
-    super.dispose();
   }
 
   @override
@@ -206,5 +207,13 @@ class _loginState extends State<login> {
 
       }
     });
+  }
+
+  Future<bool> _onPop() {
+    Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => pigAboo(),
+        ));
   }
 }

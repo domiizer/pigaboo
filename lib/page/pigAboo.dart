@@ -18,8 +18,6 @@ import 'package:pigaboo/page/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class pigAboo extends StatefulWidget {
-  static String imagep =
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSN3lPsPRhwrCLlWw9OizH4_pVebhxDIjrhszJ6feDV73fMxNXf&usqp=CAU';
   Login userData;
 
   pigAboo({this.userData});
@@ -38,8 +36,9 @@ class _pigAbooState extends State<pigAboo> {
   @override
   void initState() {
     // TODO: implement initState
-    isLoad = false;
     super.initState();
+    isLoad = false;
+    _onCardTapped('KLNK');
   }
 
   @override
@@ -49,6 +48,7 @@ class _pigAbooState extends State<pigAboo> {
     constanc.ScreenWidth = MediaQuery.of(context).size.width;
     constanc.ScreenHeight = MediaQuery.of(context).size.height;
     getUserData();
+
   }
 
   @override
@@ -78,7 +78,7 @@ class _pigAbooState extends State<pigAboo> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           value: dropdownValue,
-//                          style: TextStyle(color: Colors.deepPurple),
+                          style: TextStyle(color: Colors.black,fontSize: 10),
                           onChanged: (String newValue) {
                             setState(() {
                               dropdownValue = newValue;
