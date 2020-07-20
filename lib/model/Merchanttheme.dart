@@ -12,7 +12,7 @@ class Merchanttheme {
   Merchanttheme({
     this.id,
     this.shopAlias,
-    this.mainColour,
+    this.mainColour='C0C0C0',
     this.secColour,
     this.txtColour,
     this.logoUrl,

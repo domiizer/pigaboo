@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       model: loginmodel(),
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: pigAboo(),
+          home: merchants('KLNK'),
           theme: ThemeData(
               primarySwatch: Colors.grey,
               primaryTextTheme:

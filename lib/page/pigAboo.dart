@@ -792,15 +792,15 @@ class _pigAbooState extends State<pigAboo> {
         print(responseJson['theme']);
         Merchantpayment MerchantPayment =
             Merchantpayment.fromJson(responseJson['payment']);
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => merchants(
-                      language: language,
-                      merchantData: MerchantData,
-                      merchantTheme: MerchantTheme,
-                      merchantPayment: MerchantPayment,
-                    )));
+//        Navigator.push(
+//            context,
+//            CupertinoPageRoute(
+//                builder: (context) => merchants(
+//                      language: language,
+//                      merchantData: MerchantData,
+//                      merchantTheme: MerchantTheme,
+//                      merchantPayment: MerchantPayment,
+//                    )));
       } else {
         throw Exception('error :(');
       }

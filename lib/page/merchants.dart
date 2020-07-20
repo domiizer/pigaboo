@@ -17,16 +17,19 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class merchants extends StatefulWidget {
-  Pasa language;
-  Merchantdata merchantData;
-  Merchanttheme merchantTheme;
-  Merchantpayment merchantPayment;
+  String store;
+  merchants(this.store);
 
-  merchants(
-      {this.language,
-      this.merchantData,
-      this.merchantTheme,
-      this.merchantPayment});
+//  Pasa language;
+//  Merchantdata merchantData;
+//  Merchanttheme merchantTheme;
+//  Merchantpayment merchantPayment;
+
+//  merchants(
+//      {this.language,
+//      this.merchantData,
+//      this.merchantTheme,
+//      this.merchantPayment});
 
   @override
   _merchantsState createState() => _merchantsState();
@@ -34,6 +37,7 @@ class merchants extends StatefulWidget {
 
 class _merchantsState extends State<merchants> {
   SharedPreferences prefs;
+  Pasa language = Pasa();
   bool getAllUserOrder = true;
   bool isLoadOrder = false;
   bool isLoadData = true;
@@ -49,20 +53,24 @@ class _merchantsState extends State<merchants> {
   List allOrderedHistoryList = new List();
   var objinmerchant;
   List taptoscroll=new List();
+  Merchantdata merchantData;
+  Merchanttheme merchantTheme;
+  Merchantpayment merchantPayment;
+  bool isLoad=true;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    for(int i = 0; i<20;i++){
-      taptoscroll.add(GlobalKey());
-    }
-    LoadData();
+    _setStore(widget.store);
+//    LoadData();
   }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    constanc.ScreenWidth = MediaQuery.of(context).size.width;
+    constanc.ScreenHeight = MediaQuery.of(context).size.height;
     getUserData();
   }
 
@@ -77,13 +85,17 @@ class _merchantsState extends State<merchants> {
           currentFocus.unfocus();
         }
       },
-      child: Scaffold(
+      child: isLoad==true?Scaffold(body: Center(
+        child: Container(
+          child: CircularProgressIndicator(),
+        ),
+      )):Scaffold(
           appBar: AppBar(
-            backgroundColor: Color(hexColor(widget.merchantTheme.mainColour)),
+            backgroundColor: Color(hexColor(merchantTheme.mainColour)),
             title: Row(
               children: <Widget>[
                 CircleAvatar(
-                  backgroundImage: NetworkImage(widget.merchantTheme.logoUrl),
+                  backgroundImage: NetworkImage(merchantTheme.logoUrl),
                 ),
                 Expanded(
                   child: Container(
@@ -92,12 +104,6 @@ class _merchantsState extends State<merchants> {
                 ),
                 IconButton(
                   onPressed: () {
-//                    _showAlertOrderCode();
-//                    showGeneralDialog(
-//                        context: context,
-//                        pageBuilder: (context, animation1, animation2) {
-//                          return MyDialog(widget.merchantData.alias);
-//                        });
                     showGeneralDialog(
                         barrierColor: Colors.black.withOpacity(0.5),
                         transitionBuilder: (context, a1, a2, widgets) {
@@ -109,7 +115,7 @@ class _merchantsState extends State<merchants> {
                             child: Opacity(
                               opacity: a1.value,
                               child: MyDialog(
-                                  widget.merchantData.alias, widget.language,widget.merchantTheme),
+                                  merchantData.alias, language,merchantTheme),
                             ),
                           );
                         },
@@ -121,7 +127,6 @@ class _merchantsState extends State<merchants> {
                   },
                   icon: Icon(Icons.description),
                 ),
-//                SizedBox(width: 10,),
                 isLogin == true
                     ? GestureDetector(
                         onTap: () {},
@@ -173,15 +178,14 @@ class _merchantsState extends State<merchants> {
                       child: Column(
                         children: <Widget>[
                           Image.network(
-                            widget.merchantTheme.heroboxUrl,
-//                            'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSN3lPsPRhwrCLlWw9OizH4_pVebhxDIjrhszJ6feDV73fMxNXf&usqp=CAU',
+                            merchantTheme.heroboxUrl,
                             fit: BoxFit.cover,
                             width: constanc.ScreenWidth,
                             height: constanc.ScreenHeight * 0.2,
                           ),
                           Divider(
                             color: Color(
-                                hexColor(widget.merchantTheme.mainColour)),
+                                hexColor(merchantTheme.mainColour)),
                             height: 30,
                             indent: constanc.ScreenWidth / 2 - 50,
                             endIndent: constanc.ScreenWidth / 2 - 50,
@@ -228,10 +232,7 @@ class _merchantsState extends State<merchants> {
                                                   image: NetworkImage(
                                                       subCategoties[index][0]
                                                           ['img_url']),
-//                                                image: NetworkImage(
-//                                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSN3lPsPRhwrCLlWw9OizH4_pVebhxDIjrhszJ6feDV73fMxNXf&usqp=CAU'),
                                                 )),
-//                                      ),
                                           ),
                                           Text(
                                             popular_Categories[index].toString(),
@@ -258,7 +259,7 @@ class _merchantsState extends State<merchants> {
                             height: 12,
                             thickness: 10,
                             color: Color(
-                                hexColor(widget.merchantTheme.mainColour)),
+                                hexColor(merchantTheme.mainColour)),
                           ),
                           Container(
                             width: constanc.ScreenWidth,
@@ -271,18 +272,18 @@ class _merchantsState extends State<merchants> {
                                   Divider(
                                     height: 20,
                                     color: Color(hexColor(
-                                        widget.merchantTheme.mainColour)),
+                                        merchantTheme.mainColour)),
                                     thickness: 2,
                                     endIndent: (constanc.ScreenWidth / 4) * 3,
                                   ),
                                   Text(
-                                    widget.language.Recommended,
+                                    language.Recommended,
                                     textScaleFactor: 1.0,
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text(widget.language.Recommended_desc,
+                                  Text(language.Recommended_desc,
                                       textScaleFactor: 1.0),
                                   Container(
                                     width: constanc.ScreenWidth,
@@ -301,8 +302,6 @@ class _merchantsState extends State<merchants> {
                                             margin: EdgeInsets.all(10),
                                             child: Stack(
                                               children: <Widget>[
-//                                                Image.network(
-//                                                  'https://6.viki.io/image/43caa85b2af94eb198f0050e9a1a857c.jpeg?s=900x600&e=t',
                                                 Image.network(
                                                   promoted[index]['img_url'],
                                                   fit: BoxFit.cover,
@@ -329,7 +328,7 @@ class _merchantsState extends State<merchants> {
                                                     Container(
                                                       color: Colors.deepOrange,
                                                       child: Text(
-                                                        widget.language.hot,
+                                                        language.hot,
                                                         textScaleFactor: 1.0,
                                                         style: TextStyle(
                                                             color:
@@ -347,8 +346,7 @@ class _merchantsState extends State<merchants> {
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  Image.network(widget.merchantTheme.promoUrl,
-//                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSN3lPsPRhwrCLlWw9OizH4_pVebhxDIjrhszJ6feDV73fMxNXf&usqp=CAU',
+                                  Image.network(merchantTheme.promoUrl,
                                       fit: BoxFit.cover,
                                       width: constanc.ScreenWidth,
                                       height: constanc.ScreenWidth,
@@ -387,8 +385,7 @@ class _merchantsState extends State<merchants> {
                                           children: <Widget>[
                                             Divider(
                                               height: 50,
-                                              color: Color(hexColor(widget
-                                                  .merchantTheme.mainColour)),
+                                              color: Color(hexColor(merchantTheme.mainColour)),
                                               thickness: 2,
                                               endIndent:
                                                   (constanc.ScreenWidth / 4) *
@@ -442,7 +439,6 @@ class _merchantsState extends State<merchants> {
                                                                             index]
                                                                         [index2]
                                                                     ['img_url'],
-//                                                                'https://f.ptcdn.info/963/022/000/1409582663-01-o.jpg',
                                                                 fit: BoxFit
                                                                     .cover,
                                                                 width: 150,
@@ -495,13 +491,6 @@ class _merchantsState extends State<merchants> {
                                                                           ),
                                                                         ),
                                                                       ),
-//                                                                      Expanded(
-//                                                                        child:
-//                                                                            Container(
-//                                                                          height:
-//                                                                              5,
-//                                                                        ),
-//                                                                      ),
                                                                       Expanded(
                                                                         flex:1,
                                                                         child: Container(
@@ -603,7 +592,7 @@ class _merchantsState extends State<merchants> {
               children: <Widget>[
                 FloatingActionButton(
                   backgroundColor:
-                      Color(hexColor(widget.merchantTheme.mainColour)),
+                      Color(hexColor(merchantTheme.mainColour)),
                   child: Icon(Icons.shopping_cart),
                   onPressed: () {
                     _navigatorToCart();
@@ -629,14 +618,14 @@ class _merchantsState extends State<merchants> {
   }
   _navigatorToCart() async {
     print('userSended');
-    print(widget.merchantData.alias);
+    print(merchantData.alias);
     await Navigator.push(
         context,
         CupertinoPageRoute(
             builder: (context) => cart(
-                language: widget.language,
+                language: language,
                 countForSelected: countForSelected,
-                shopAlias: widget.merchantData.alias))).then((value) {
+                shopAlias: merchantData.alias))).then((value) {
       setState(() {
         countForSelected = value;
         for (int i = 0; i < countForItem.length; i++) {
@@ -666,7 +655,7 @@ class _merchantsState extends State<merchants> {
             context,
             // ignore: missing_return
             CupertinoPageRoute(
-                builder: (context) => login(language: widget.language)))
+                builder: (context) => login(language: language)))
         .then((value) {
       setState(() {
         isLogin = prefs.getBool('status');
@@ -686,7 +675,7 @@ class _merchantsState extends State<merchants> {
     Login checklogin = await Navigator.push(
         context,
         CupertinoPageRoute(
-            builder: (context) => register(language: widget.language)));
+            builder: (context) => register(language: language)));
     if (checklogin != null) {
       setState(() {});
     }
@@ -697,15 +686,40 @@ class _merchantsState extends State<merchants> {
     int colorint = int.parse(colornew);
     return colorint;
   }
+  _setStore(String alias) async {
 
-  Future LoadData() async {
+    await http
+        .post('https://api.pigaboo.me/getSingleShop', headers: <String, String>{
+//          'Content-Type': 'application/json; charset=UTF-8',
+    }, body: {
+      "shopAlias": alias,
+    }).then((response) {
+      if (response.statusCode == 200) {
+//        debugPrint(response.body, wrapWidth: 1024);
+        Map<String, dynamic> responseJson = json.decode(response.body);
+        merchantData = Merchantdata.fromJson(responseJson['data']);
+        merchantTheme =
+        Merchanttheme.fromJson(responseJson['theme']);
+        print(responseJson['theme']);
+        merchantPayment =
+        Merchantpayment.fromJson(responseJson['payment']);
+        LoadData(alias);
+      } else {
+        throw Exception('error :(');
+      }
+      setState(() {
+        isLoad = false;
+      });
+    });
+  }
+  Future LoadData(String alias) async {
     await http
         .post('https://api.pigaboo.me/getAllMenuList',
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(<String, String>{
-              'shopAlias': 'KLNK',
+              'shopAlias': alias,
             }))
         .then((response) {
       Map<String, dynamic> responseJson = json.decode(response.body);
@@ -737,6 +751,7 @@ class _merchantsState extends State<merchants> {
         }
         avgPrice.add((sum / subCategoties[i].length).floor());
         sum = 0;
+        taptoscroll.add(GlobalKey());
       }
 
       return data.map((m) => new MerchantAllMenuList.fromJson(m)).toList();
@@ -754,10 +769,6 @@ class _merchantsState extends State<merchants> {
       }
       obj[arrObj[i][property]].add(arrObj[i]);
     }
-
-    final prettyString = JsonEncoder.withIndent('  ').convert(obj);
-
-//    debugPrint(prettyString);
     return obj;
   }
 
@@ -813,8 +824,6 @@ class _merchantsState extends State<merchants> {
         checkis.add(false);
         addonPrice.add(int.parse(addon[i]['price'].toString()));
       }
-//      print(addon);
-//      print(addonPrice[0].runtimeType);
     } else {}
     showModalBottomSheet(
         isScrollControlled: true,
@@ -1177,7 +1186,6 @@ class _MyDialogState extends State<MyDialog> {
               ),
             ),
             Expanded(
-//                        child: Container(child: Center(child:  CircularProgressIndicator(),),),
                 child: isLoadOrder == true
                     ? Container(
                         child: Center(
@@ -1314,4 +1322,5 @@ class _MyDialogState extends State<MyDialog> {
     int colorint = int.parse(colornew);
     return colorint;
   }
+
 }
