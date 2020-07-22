@@ -17,8 +17,10 @@ class cart extends StatefulWidget {
   Pasa language;
   List countForSelected;
   String shopAlias;
-
-  cart({this.language, this.countForSelected, this.shopAlias});
+  String maincolor;
+  String shopname;
+  String logo;
+  cart({this.language, this.countForSelected, this.shopAlias, this.maincolor, this.logo, this.shopname});
 
   @override
   _cartState createState() => _cartState();
@@ -47,7 +49,7 @@ class _cartState extends State<cart> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.language.itemsinbasket,textScaleFactor: 1.0),
-          backgroundColor: Color.fromRGBO(255, 176, 3, 1),
+          backgroundColor: Color(hexColor(widget.maincolor)),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
             onPressed: () {
@@ -425,7 +427,7 @@ class _cartState extends State<cart> {
             context,
             // ignore: missing_return
             CupertinoPageRoute(
-                builder: (context) => login(language: widget.language)))
+                builder: (context) => login(language: widget.language,maincolor:widget.maincolor,logo:widget.logo,shopname:widget.shopname)))
         .then((value) {
       setState(() {
         isLogin = prefs.getBool('status');
@@ -498,7 +500,7 @@ class _cartState extends State<cart> {
               context,
               CupertinoPageRoute(
                   builder: (context) =>
-                      DeliveryDetail(language: widget.language,order_code: responseJson['detail']['order_code'])));
+                      DeliveryDetail(language: widget.language,order_code: responseJson['detail']['order_code'],maincolor:widget.maincolor)));
         }
       } else {
         print('not response');
@@ -539,5 +541,10 @@ class _cartState extends State<cart> {
         isLogin = prefs.getBool('status');
       });
     }
+  }
+  hexColor(String hexcolorcode) {
+    String colornew = '0xff' + hexcolorcode;
+    int colorint = int.parse(colornew);
+    return colorint;
   }
 }

@@ -6,8 +6,10 @@ import 'package:pigaboo/model/Pasa.dart';
 import 'package:http/http.dart' as http;
 class register extends StatefulWidget {
   Pasa language;
-
-  register({this.language});
+  String maincolor;
+  String logo;
+  String shopname;
+  register({this.language, this.maincolor, this.logo, this.shopname});
 
   @override
   _registerState createState() => _registerState();
@@ -38,22 +40,21 @@ class _registerState extends State<register> {
     bool CheckPassword = false;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(255, 176, 3, 1),
+        backgroundColor: Color(hexColor(widget.maincolor)),
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Image.asset(
-              'images/Logo_black.png',
-              scale: 8,
+            CircleAvatar(
+              backgroundImage: NetworkImage(widget.logo),
             ),
-            Column(
-              children: <Widget>[
-                Text(
-                  'PIGABOO',textScaleFactor: 1.0,
-                ),
-                Text(widget.language.fromdoortodoor,textScaleFactor: 1.0),
-              ],
-            ),
+            Expanded(
+                child: Center(
+                  child: Container(
+                      child: Text(
+                        widget.shopname,
+                        textScaleFactor: 1.0,
+                      )),
+                )),
           ],
         ),
       ),
@@ -88,12 +89,12 @@ class _registerState extends State<register> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                             borderSide: BorderSide(
-                                color: Color.fromRGBO(255, 176, 3, 1)),
+                                color: Color(hexColor(widget.maincolor))),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                             borderSide: BorderSide(
-                                color: Color.fromRGBO(255, 176, 3, 1)),
+                                color: Color(hexColor(widget.maincolor))),
                           ),
                         ),
                       ),
@@ -112,12 +113,12 @@ class _registerState extends State<register> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                             borderSide: BorderSide(
-                                color: Color.fromRGBO(255, 176, 3, 1)),
+                                color: Color(hexColor(widget.maincolor))),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                             borderSide: BorderSide(
-                                color: Color.fromRGBO(255, 176, 3, 1)),
+                                color: Color(hexColor(widget.maincolor))),
                           ),
                         ),
                       ),
@@ -136,12 +137,12 @@ class _registerState extends State<register> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                             borderSide: BorderSide(
-                                color: Color.fromRGBO(255, 176, 3, 1)),
+                                color: Color(hexColor(widget.maincolor))),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                             borderSide: BorderSide(
-                                color: Color.fromRGBO(255, 176, 3, 1)),
+                                color: Color(hexColor(widget.maincolor))),
                           ),
                         ),
                       ),
@@ -159,12 +160,12 @@ class _registerState extends State<register> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                             borderSide: BorderSide(
-                                color: Color.fromRGBO(255, 176, 3, 1)),
+                                color: Color(hexColor(widget.maincolor))),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                             borderSide: BorderSide(
-                                color: Color.fromRGBO(255, 176, 3, 1)),
+                                color: Color(hexColor(widget.maincolor))),
                           ),
                           //fillColor: Colors.green
                         ),
@@ -174,7 +175,7 @@ class _registerState extends State<register> {
                 ),
                 CupertinoButton(
                   child: Text(widget.language.submit,textScaleFactor: 1.0),
-                  color: Color.fromRGBO(255, 176, 3, 1),
+                  color: Color(hexColor(widget.maincolor)),
                   onPressed: () {
                     setState(() {
                       firstNameController.text.isEmpty
@@ -306,5 +307,10 @@ class _registerState extends State<register> {
         throw Exception('error :(');
       }
     });
+  }
+  hexColor(String hexcolorcode) {
+    String colornew = '0xff' + hexcolorcode;
+    int colorint = int.parse(colornew);
+    return colorint;
   }
 }

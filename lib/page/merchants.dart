@@ -625,7 +625,7 @@ class _merchantsState extends State<merchants> {
             builder: (context) => cart(
                 language: language,
                 countForSelected: countForSelected,
-                shopAlias: merchantData.alias))).then((value) {
+                shopAlias: merchantData.alias,maincolor:merchantTheme.mainColour,logo:merchantTheme.logoUrl,shopname:merchantData.full_shop_name))).then((value) {
       setState(() {
         countForSelected = value;
         for (int i = 0; i < countForItem.length; i++) {
@@ -655,7 +655,7 @@ class _merchantsState extends State<merchants> {
             context,
             // ignore: missing_return
             CupertinoPageRoute(
-                builder: (context) => login(language: language)))
+                builder: (context) => login(language: language,maincolor:merchantTheme.mainColour,logo:merchantTheme.logoUrl,shopname:merchantData.full_shop_name)))
         .then((value) {
       setState(() {
         isLogin = prefs.getBool('status');
@@ -675,7 +675,7 @@ class _merchantsState extends State<merchants> {
     Login checklogin = await Navigator.push(
         context,
         CupertinoPageRoute(
-            builder: (context) => register(language: language)));
+            builder: (context) => register(language: language,maincolor:merchantTheme.mainColour,logo:merchantTheme.logoUrl,shopname:merchantData.full_shop_name)));
     if (checklogin != null) {
       setState(() {});
     }

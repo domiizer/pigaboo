@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -14,8 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class DeliveryDetail extends StatefulWidget {
   Pasa language;
   String order_code;
-
-  DeliveryDetail({this.language, this.order_code});
+  String maincolor;
+  DeliveryDetail({this.language, this.order_code, this.maincolor});
 
   @override
   _DeliveryDetailState createState() => _DeliveryDetailState();
@@ -60,7 +58,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
             onWillPop: _onBackPressed,
             child: Scaffold(
               appBar: AppBar(
-                backgroundColor: Color.fromRGBO(255, 176, 3, 1),
+                backgroundColor: Color(hexColor(widget.maincolor)),
                 automaticallyImplyLeading: false,
               ),
               body: SingleChildScrollView(
@@ -596,7 +594,11 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
       });
     });
   }
-
+  hexColor(String hexcolorcode) {
+    String colornew = '0xff' + hexcolorcode;
+    int colorint = int.parse(colornew);
+    return colorint;
+  }
   cancelTimer() {
     this.timers.cancel();
   }

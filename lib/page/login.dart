@@ -6,14 +6,18 @@ import 'package:pigaboo/model/Login.dart';
 import 'package:http/http.dart' as http;
 import 'package:pigaboo/model/Pasa.dart';
 import 'package:pigaboo/page/pigAboo.dart';
+import 'package:pigaboo/page/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pigaboo/scoped_model/login_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class login extends StatefulWidget {
   Pasa language;
+  String maincolor;
+  String logo;
+  String shopname;
 
-  login({this.language});
+  login({this.language, this.maincolor, this.logo, this.shopname});
 
   @override
   _loginState createState() => _loginState();
@@ -39,22 +43,21 @@ class _loginState extends State<login> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(255, 176, 3, 1),
+        backgroundColor: Color(hexColor(widget.maincolor)),
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Image.asset(
-              'images/Logo_black.png',
-              scale: 8,
+            CircleAvatar(
+              backgroundImage: NetworkImage(widget.logo),
             ),
-            Column(
-              children: <Widget>[
-                Text(
-                  'PIGABOO',textScaleFactor: 1.0,
-                ),
-                Text(widget.language.fromdoortodoor,textScaleFactor: 1.0),
-              ],
-            ),
+            Expanded(
+                child: Center(
+                  child: Container(
+                      child: Text(
+              widget.shopname,
+              textScaleFactor: 1.0,
+            )),
+                )),
           ],
         ),
       ),
@@ -76,13 +79,13 @@ class _loginState extends State<login> {
                         fillColor: Colors.white,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                          borderSide:
-                              BorderSide(color: Color.fromRGBO(255, 176, 3, 1)),
+                          borderSide: BorderSide(
+                              color: Color(hexColor(widget.maincolor))),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                          borderSide:
-                              BorderSide(color: Color.fromRGBO(255, 176, 3, 1)),
+                          borderSide: BorderSide(
+                              color: Color(hexColor(widget.maincolor))),
                         ),
                         //fillColor: Colors.green
                       ),
@@ -98,14 +101,14 @@ class _loginState extends State<login> {
                         labelText: "Password",
                         fillColor: Colors.white,
                         enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color.fromRGBO(255, 176, 3, 1)),
+                          borderSide: BorderSide(
+                              color: Color(hexColor(widget.maincolor))),
                           borderRadius: BorderRadius.circular(25.0),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                          borderSide:
-                              BorderSide(color: Color.fromRGBO(255, 176, 3, 1)),
+                          borderSide: BorderSide(
+                              color: Color(hexColor(widget.maincolor))),
                         ),
                       ),
                     ),
@@ -126,7 +129,8 @@ class _loginState extends State<login> {
                               });
                             },
                             child: Text(
-                              "Login",textScaleFactor: 1.0,
+                              "Login",
+                              textScaleFactor: 1.0,
                               style: TextStyle(fontSize: 20),
                             ),
                           );
@@ -135,14 +139,16 @@ class _loginState extends State<login> {
                       FlatButton(
                         //Register Button
                         onPressed: () {
-                          setState(() {
-                            isLoading = true;
-                          });
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => register(language: widget.language,maincolor:widget.maincolor,logo:widget.logo,shopname:widget.shopname)));
                         },
                         child: Text(
-                          "Register",textScaleFactor: 1.0,
+                          "Register",
+                          textScaleFactor: 1.0,
                           style: TextStyle(
-                              color: Color.fromRGBO(255, 176, 3, 1),
+                              color: Color(hexColor(widget.maincolor)),
                               fontSize: 20),
                         ),
                       )
@@ -158,18 +164,19 @@ class _loginState extends State<login> {
       ),
     );
   }
+
   addStringToSF(Map<String, dynamic> responseJson) async {
     print(responseJson);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('status',responseJson['status']);
-    prefs.setString('firstName',responseJson['firstName']);
-    prefs.setString('lastName',responseJson['lastName']);
-    prefs.setString('phoneNumber',responseJson['phoneNumber']);
-    prefs.setString('address',responseJson['address']);
-    prefs.setString('address',responseJson['address']);
+    prefs.setBool('status', responseJson['status']);
+    prefs.setString('firstName', responseJson['firstName']);
+    prefs.setString('lastName', responseJson['lastName']);
+    prefs.setString('phoneNumber', responseJson['phoneNumber']);
+    prefs.setString('address', responseJson['address']);
+    prefs.setString('address', responseJson['address']);
 //    prefs.setString('address',"117/210 บ้านร้องเรือคํา ซอย 20 ตำบลป่าแดด อำเภอเมืองเชียงใหม่ เชียงใหม่ 50100 ประเทศไทย");
-    prefs.setString('flag',responseJson['flag']);
-    prefs.setString('customerId',responseJson['customerId']);
+    prefs.setString('flag', responseJson['flag']);
+    prefs.setString('customerId', responseJson['customerId']);
     print(prefs.getString('customerId'));
     setState(() {
       isLoading = false;
@@ -192,10 +199,10 @@ class _loginState extends State<login> {
         addStringToSF(responseJson);
       } else {
         setState(() {
-          isLoading=false;
+          isLoading = false;
         });
         AlertDialog alert = AlertDialog(
-          title: Text("User does not exist",textScaleFactor: 1.0),
+          title: Text("User does not exist", textScaleFactor: 1.0),
         );
         showDialog(
           context: context,
@@ -204,7 +211,6 @@ class _loginState extends State<login> {
           },
         );
         throw Exception('error :(');
-
       }
     });
   }
@@ -215,5 +221,11 @@ class _loginState extends State<login> {
         CupertinoPageRoute(
           builder: (context) => pigAboo(),
         ));
+  }
+
+  hexColor(String hexcolorcode) {
+    String colornew = '0xff' + hexcolorcode;
+    int colorint = int.parse(colornew);
+    return colorint;
   }
 }
