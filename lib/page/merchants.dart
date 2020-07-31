@@ -92,6 +92,7 @@ class _merchantsState extends State<merchants> {
       )):Scaffold(
           appBar: AppBar(
             backgroundColor: Color(hexColor(merchantTheme.mainColour)),
+            automaticallyImplyLeading: false,
             title: Row(
               children: <Widget>[
                 CircleAvatar(
@@ -524,7 +525,7 @@ class _merchantsState extends State<merchants> {
                                                                         ? null
                                                                         : Colors.red,
                                                                       ),
-                                                                    width: 20,
+//                                                                    width: 20,
                                                                     height: 20,
                                                                         child: countForItem[index][index2]['count'] == 0
                                                                       ? null
@@ -675,9 +676,16 @@ class _merchantsState extends State<merchants> {
     Login checklogin = await Navigator.push(
         context,
         CupertinoPageRoute(
-            builder: (context) => register(language: language,maincolor:merchantTheme.mainColour,logo:merchantTheme.logoUrl,shopname:merchantData.full_shop_name)));
+            builder: (context) => register(language: language,maincolor:merchantTheme.mainColour,logo:merchantTheme.logoUrl,shopname:merchantData.full_shop_name)))
+        .then((value) {
+      setState(() {
+        isLogin = prefs.getBool('status');
+      });
+    });
     if (checklogin != null) {
-      setState(() {});
+      setState(() {
+        isLogin = prefs.getBool('status');
+      });
     }
   }
 
@@ -1062,6 +1070,7 @@ class _merchantsState extends State<merchants> {
 
   getUserData() async {
     prefs = await SharedPreferences.getInstance();
+    prefs.setString('alias',widget.store);
     //Return String
     if (prefs.getBool('status') != null) {
       setState(() {
@@ -1251,9 +1260,7 @@ class _MyDialogState extends State<MyDialog> {
                                       child: Container(
                                         child: Text(
                                           getAllUserOrder == true
-                                              ? allOrderedActiveList[index]
-                                                      ['order_status']
-                                                  .toString()
+                                              ? OrderStatus(allOrderedActiveList[index]['order_status'])
                                               : allOrderedHistoryList[index]
                                                       ['order_status']
                                                   .toString(),
@@ -1270,8 +1277,25 @@ class _MyDialogState extends State<MyDialog> {
       ),
     );
   }
+  OrderStatus(Status){
 
+    print('testthis');
+    String status='tba';
+    switch (Status){
+      case '0':{status = 'Placed';}
+      break;
+      case '1':{status = 'Prepare';}
+      break;
+      case '2':{status = 'OnTheWay';}
+      break;
+      case '3':{status = 'Delivered';}
+      break;
+    }
+    return status;
+  }
   _getAllUserOrdersActive() async {
+//    allOrderedActiveList
+    allOrderedActiveList =[];
     prefs = await SharedPreferences.getInstance();
     await http
         .post('https://api.pigaboo.me/getAllUserOrdersActive',
@@ -1297,6 +1321,7 @@ class _MyDialogState extends State<MyDialog> {
   }
 
   void _getAllUserOrdersHistory() async {
+    allOrderedHistoryList = [];
     await http
         .post('https://api.pigaboo.me/getAllUserOrdersHistory',
             headers: <String, String>{
@@ -1307,8 +1332,13 @@ class _MyDialogState extends State<MyDialog> {
             }))
         .then((response) {
       print(response.statusCode);
+      for (int i = 0; i < json.decode(response.body).length; i++) {
+        if (json.decode(response.body)[i]['shop_alias'] == widget.alias) {
+          allOrderedHistoryList.add(json.decode(response.body)[i]);
+        }
+      }
       setState(() {
-        allOrderedHistoryList = json.decode(response.body);
+//        allOrderedHistoryList = json.decode(response.body);
         debugPrint(allOrderedHistoryList.toString(), wrapWidth: 1024);
       });
       print('in history');

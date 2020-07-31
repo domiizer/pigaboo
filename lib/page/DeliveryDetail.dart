@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pigaboo/model/Pasa.dart';
 import 'package:pigaboo/model/constanc.dart';
+import 'package:pigaboo/page/merchants.dart';
 import 'package:pigaboo/page/pigAboo.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -504,7 +505,7 @@ class _DeliveryDetailState extends State<DeliveryDetail> {
     Navigator.push(
         context,
         CupertinoPageRoute(
-          builder: (context) => pigAboo(),
+          builder: (context) => merchants(prefs.getString('alias')),
         ));
   }
 

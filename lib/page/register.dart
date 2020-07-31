@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pigaboo/model/Pasa.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 class register extends StatefulWidget {
   Pasa language;
   String maincolor;
@@ -151,6 +152,7 @@ class _registerState extends State<register> {
                       ),
                       TextFormField(
                         //userTextField
+                        obscureText: true,
                         controller: passwordController,
                         decoration: InputDecoration(
                           labelText: "password",
@@ -278,9 +280,23 @@ class _registerState extends State<register> {
       print(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> responseJson = json.decode(response.body);
-        print(responseJson);
+        print(responseJson['status']);
 //        setState(() {
+        if(responseJson['status']) {
           _authenticate(phoneNumber, password);
+        }else{
+          AlertDialog alert = AlertDialog(
+            title: Text("status false",textScaleFactor: 1.0),
+            content: Text("try again",textScaleFactor: 1.0),
+          );
+          // show the dialog
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return alert;
+            },
+          );
+        }
 //        });
       } else {
         throw Exception('error :(');
@@ -299,13 +315,28 @@ class _registerState extends State<register> {
       print(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> responseJson = json.decode(response.body);
-        setState(() {
-          isLoading = false;
-          Navigator.pop(context,true);
-        });
+        addStringToSF(responseJson);
       } else {
         throw Exception('error :(');
       }
+    });
+  }
+  addStringToSF(Map<String, dynamic> responseJson) async {
+    print(responseJson);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('status', responseJson['status']);
+    prefs.setString('firstName', responseJson['firstName']);
+    prefs.setString('lastName', responseJson['lastName']);
+    prefs.setString('phoneNumber', responseJson['phoneNumber']);
+    prefs.setString('address', responseJson['address']);
+    prefs.setString('address', responseJson['address']);
+//    prefs.setString('address',"117/210 บ้านร้องเรือคํา ซอย 20 ตำบลป่าแดด อำเภอเมืองเชียงใหม่ เชียงใหม่ 50100 ประเทศไทย");
+    prefs.setString('flag', responseJson['flag']);
+    prefs.setString('customerId', responseJson['customerId']);
+    print(prefs.getString('customerId'));
+    setState(() {
+      isLoading = false;
+      Navigator.pop(context,true);
     });
   }
   hexColor(String hexcolorcode) {
